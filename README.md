@@ -70,7 +70,7 @@ To apply the tools we have learned in the course on a machine learning problem. 
 
 ## Frameworks
 
-For the modeling part we are planning to use pytorch frameworks such as torchaudio (for handling sound samples) and torchvision (for modeling based on spectrograms). For version control we are going to use git and dvc (for data) and host our repo on Github. We will containerize the project using docker and place the final image on Docker Hub. For logging we will use wandb and set up experiments using hydra. To ensure code quality we will use ruff for linting, pytest for unit tests and Github Actions to continuously integrate changes. 
+For the modeling part we are planning to use pytorch frameworks such as [torchaudio](https://pytorch.org/audio/stable/index.html) (for handling sound samples) and [torchvision](https://pytorch.org/vision/stable/index.html) (for modeling based on spectrograms). We will use [torchmetrics](https://lightning.ai/docs/torchmetrics/stable/) for evaluating our model.  For version control we are going to use git and dvc (for data) and host our repo on Github. We will containerize the project using docker and place the final image on Docker Hub. For logging we will use wandb and set up experiments using hydra. To ensure code quality we will use ruff for linting, pytest for unit tests and Github Actions to continuously integrate changes. 
 
 ## Data
 
