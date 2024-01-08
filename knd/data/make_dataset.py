@@ -51,16 +51,16 @@ if __name__ == '__main__':
                 # Append emotion to label
                 labels.append(emotion)
 
+    print('data', data[0].shape)
+
     # Convert the list of spectrograms to a PyTorch tensor
     data = torch.cat(data, dim = 0)
+    data = data.unsqueeze(1) # add channel dimension (image models expect 3 channels, but we only have 1)
     labels = torch.FloatTensor(labels)
 
     # Plot the spectrogram
     # plt.figure(figsize=(10, 4))
     # plt.imshow(data[30], cmap='viridis', origin='lower', aspect='auto')
-
-    # Flatten the data tensor
-    data = data.view(data.size(0), -1)
 
     # Split the data and labels into training and testing sets
     train_data, test_data, train_labels, test_labels = train_test_split(
@@ -70,11 +70,11 @@ if __name__ == '__main__':
         random_state=42  # Set random_state for reproducibility
     )
 
-    # # Check the sizes of the resulting sets
-    # print("Train data size:", train_data.size())
-    # print("Test data size:", test_data.size())
-    # print("Train labels size:", train_labels.size())
-    # print("Test labels size:", test_labels.size())
+     # Check the sizes of the resulting sets
+    print("Train data size:", train_data.shape)
+    print("Test data size:", test_data.shape)
+    print("Train labels size:", train_labels.shape)
+    print("Test labels size:", test_labels.shape)
 
     torch.save(train_data, "data/processed/train_images.pt")
     torch.save(train_labels, "data/processed/train_labels.pt")
