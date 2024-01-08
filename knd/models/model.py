@@ -1,26 +1,30 @@
 import torch
+from torch import nn
+from torchvision.models import vgg19
 
-class MyNeuralNet(torch.nn.Module):
-    """ Basic neural network class. 
-    
-    Args:
-        in_features: number of input features
-        out_features: number of output features
-    
-    """
-    def __init__(self, in_features: int, out_features: int) -> None:
-        self.l1 = torch.nn.Linear(in_features, 500)
-        self.l2 = torch.nn.Linear(500, out_features)
-        self.r = torch.nn.ReLU()
-    
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
-        """Forward pass of the model.
-        
-        Args:
-            x: input tensor expected to be of shape [N,in_features]
+class DummyNet(nn.Module):
+	def __init__(self):
+		super().__init__()
+		self.net = vgg19(pretrained=True)
+		for param in self.net.parameters():
+			param.requires_grad = False
 
-        Returns:
-            Output tensor with shape [N,out_features]
+        # change last layer to output 7 classes (and squeeze an additional layer in between)
+		model_output_features = self.net.classifier[6].in_features
+		self.net.classifier[6] = nn.Sequential(nn.Linear(model_output_features, 512),
+                                    nn.ReLU(),
+                                    nn.Dropout(0.2),
+                                    nn.Linear(512, 7))
 
-        """
-        return self.l2(self.r(self.l1(x)))
+	def forward(self, x):
+		x = self.net(x)
+		return x
+	
+
+if __name__ == '__main__':
+	spectorgrams = torch.randn(32, 1, 128, 563)
+	# repeat the channel dimension to match the pretrained model (which is for RGB images)
+	spectorgrams = torch.cat([spectorgrams, spectorgrams, spectorgrams], dim=1)
+	model = DummyNet()
+	output = model(spectorgrams)
+	print("output shape", output.shape)
