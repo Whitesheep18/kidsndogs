@@ -47,16 +47,19 @@ if __name__ == '__main__':
                 # Extract information from the filename
                 parts = filename.split('-')
                 emotion = int(parts[2])
-
+                
                 # Append emotion to label
-                labels.append(emotion)
+                labels.append(emotion-1) # subtract 1 to make the labels 0-indexed
 
     print('data', data[0].shape)
 
     # Convert the list of spectrograms to a PyTorch tensor
     data = torch.cat(data, dim = 0)
     data = data.unsqueeze(1) # add channel dimension (image models expect 3 channels, but we only have 1)
-    labels = torch.FloatTensor(labels)
+
+    # convert to one-hot encoding
+    labels = torch.nn.functional.one_hot(torch.LongTensor(labels), num_classes=8)
+    labels = labels.float()
 
     # Plot the spectrogram
     # plt.figure(figsize=(10, 4))
