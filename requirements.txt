@@ -1,5 +1,6 @@
 torch >= 2.0.0
 torchaudio == 2.0.1
+pytorch-lightning == 2.1.0
 torchvision
 matplotlib
 scikit-learn
