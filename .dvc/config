@@ -1,0 +1,7 @@
+[core]
+    remote = remote_storage
+['remote "storage"']
+    url = gdrive://1x-lkaPXZVk_BOWjy9B00FH6LUrIqIqEF
+['remote "remote_storage"']
+    url = gs://kidsndogs_audio_bucket/
+    version_aware = true
