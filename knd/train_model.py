@@ -7,7 +7,7 @@ from knd.data.dataloader import get_dataloaders
 model = DummyNet()
 
 # get dataloaders
-train_dataloader, test_dataloader = get_dataloaders()
+train_dataloader, test_dataloader = get_dataloaders(batch_size=8)
 
 # train the model
 trainer = Trainer(max_epochs=10)
