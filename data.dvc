@@ -12,15 +12,31 @@ outs:
   - relpath: processed/test_images.pt
     md5: 5385f7a3e6b9ef6d5f9748897d837bfa
     size: 82730231
+    cloud:
+      remote_storage:
+        etag: 08dcc0a082a4d583031001
+        version_id: '1704974245961820'
   - relpath: processed/test_labels.pt
     md5: fe979e5cc835569533172d8870815bff
     size: 9911
+    cloud:
+      remote_storage:
+        etag: 08c2afb982a4d583031001
+        version_id: '1704974246369218'
   - relpath: processed/train_images.pt
     md5: f84cccb96e44ad8ab60213a74bec3803
     size: 330918650
+    cloud:
+      remote_storage:
+        etag: 08dbb4fc8ca4d583031001
+        version_id: '1704974268439131'
   - relpath: processed/train_labels.pt
     md5: f69d71c59a46cffe42753527816589bf
     size: 37498
+    cloud:
+      remote_storage:
+        etag: 088695c282a4d583031001
+        version_id: '1704974246513286'
   - relpath: raw/.gitkeep
     md5: d41d8cd98f00b204e9800998ecf8427e
     size: 0
