@@ -4,7 +4,7 @@ from torchvision.models import vgg19
 import pytorch_lightning as pl
 
 class DummyNet(pl.LightningModule):
-    def __init__(self):
+    def __init__(self, lr = 0.0001):
         super().__init__()
         self.net = vgg19(pretrained=True)
         for param in self.net.parameters():
@@ -17,6 +17,9 @@ class DummyNet(pl.LightningModule):
                                     nn.Dropout(0.2),
                                     nn.Linear(512, 8))
         self.loss = nn.CrossEntropyLoss()
+        self.lr = lr
+
+        self.save_hyperparameters()
 
     def forward(self, x):
         x = self.net(x)
@@ -26,10 +29,11 @@ class DummyNet(pl.LightningModule):
         x, y = batch
         logits = self.forward(x)
         loss = self.loss(logits, y)
+        self.log("train_loss", loss)
         return loss
 
     def configure_optimizers(self):
-        optimizer = torch.optim.Adam(self.parameters(), lr=0.001)
+        optimizer = torch.optim.Adam(self.parameters(), lr=self.lr)
         return optimizer
 	
 
