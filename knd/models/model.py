@@ -22,11 +22,16 @@ class DummyNet(pl.LightningModule):
         self.loss = nn.CrossEntropyLoss()
         self.lr = lr
         self.train_accuracy = Accuracy(task="multiclass", num_classes=num_emotions)
+        self.val_accuracy = Accuracy(task="multiclass", num_classes=num_emotions)
         self.save_hyperparameters()
 
     def forward(self, x):
         x = self.net(x)
         return x
+    
+    def configure_optimizers(self):
+        optimizer = torch.optim.Adam(self.parameters(), lr=self.lr)
+        return optimizer
 
     def training_step(self, batch, batch_idx):
         x, y = batch
@@ -36,18 +41,31 @@ class DummyNet(pl.LightningModule):
         self.log("train_loss", loss)
 
         # get preds with softmax
-        preds = torch.softmax(logits, dim=1)
-        self.train_accuracy(preds, y)
+        preds = torch.argmax(torch.softmax(logits, dim=1), dim=1)
+        self.train_accuracy(preds, torch.argmax(y, dim=1))
         self.log('train_acc_step', self.train_accuracy)
         return loss
     
     def on_train_epoch_end(self):
         # log epoch metric
         self.log('train_acc_epoch', self.train_accuracy)
+    
+    def validation_step(self, batch, batch_idx):
+        x, y = batch
+        logits = self.forward(x)
 
-    def configure_optimizers(self):
-        optimizer = torch.optim.Adam(self.parameters(), lr=self.lr)
-        return optimizer
+        loss = self.loss(logits, y)
+        self.log("val_loss", loss)
+
+        # get preds with softmax
+        preds = torch.argmax(torch.softmax(logits, dim=1), dim=1)
+        self.val_accuracy(preds, torch.argmax(y, dim=1))
+        self.log('val_acc_step', self.val_accuracy)
+        return loss
+    
+    def on_validation_epoch_end(self):
+        # log epoch metric
+        self.log('val_acc_epoch', self.val_accuracy)
 	
 
 if __name__ == '__main__':
