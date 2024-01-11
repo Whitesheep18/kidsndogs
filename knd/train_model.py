@@ -9,7 +9,7 @@ try:
 except ImportError:
     with_logging = False
 
-if with_logging or not wandb.api.api_key:
+if not with_logging or not wandb.api.api_key:
     # likely docker container
     logger = None
 else:
