@@ -12,6 +12,6 @@ COPY data/ data/
 
 WORKDIR /
 RUN pip install -r requirements.txt --no-cache-dir
-RUN pip install . --no-deps --no-cache-dir
+RUN pip install -e . --no-deps --no-cache-dir
 
 ENTRYPOINT ["python", "-u", "knd/predict_model.py"]
