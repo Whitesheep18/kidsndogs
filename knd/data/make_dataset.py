@@ -23,8 +23,8 @@ if __name__ == '__main__':
             if filename.endswith(".wav"):
 
                 # Load the audio file
-                file_path = os.path.join(audio_folder, filename)
-                waveform, sample_rate = torchaudio.load(file_path)
+                file_path = os.path.normpath(os.path.join(audio_folder, filename))
+                waveform, sample_rate = torchaudio.load(file_path, format="wav")
 
                 # Crop or pad to ensure a consistent duration (3.0 seconds)
                 target_samples = int(target_duration * sample_rate)
