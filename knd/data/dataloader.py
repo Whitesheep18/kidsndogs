@@ -34,6 +34,9 @@ def get_dataloaders(batch_size=64):
     """
     train_dataset = SpeechDataset(train=True)
     test_dataset = SpeechDataset(train=False)
+
+    print("Number of training samples:", len(train_dataset))
+    print("Number of test samples:", len(test_dataset))
     
     train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
     test_dataloader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
