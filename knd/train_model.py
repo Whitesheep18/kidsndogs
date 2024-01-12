@@ -12,6 +12,7 @@ try:
 except ImportError:
     with_logging = False
 
+
 if not with_logging or wandb.api.api_key is None:
     # likely docker container
     logger = None
