@@ -10,10 +10,7 @@ def test_data_loading():
     # Check the number of samples in the datasets
     expected_train_samples = 1148
     expected_test_samples = 287
-
-    assert expected_train_samples > 0, "No training samples found"
-    assert expected_test_samples > 0, "No test samples found"
-
+    
     # Check a single batch's dimensions
     for images, labels in train_dataloader:
         assert images.shape[0] == min(expected_train_samples, 64), "Unexpected batch size in the training dataloader"
