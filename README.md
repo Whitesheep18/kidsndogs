@@ -14,6 +14,12 @@ The directory structure of the project looks like this:
 │   ├── processed        <- The final, canonical data sets for modeling.
 │   └── raw              <- The original, immutable data dump.
 │
+├── dockerfiles          <- Dockerfiles for training and inference.
+│   │
+│   ├── predict_model.dockerfile         
+│   │
+│   └── train_model.dockerfile 
+│
 ├── docs                 <- Documentation folder
 │   │
 │   ├── index.md         <- Homepage for your documentation
@@ -23,8 +29,6 @@ The directory structure of the project looks like this:
 │   └── source/          <- Source directory for documentation files
 │
 ├── models               <- Trained and serialized models, model predictions, or model summaries
-│
-├── notebooks            <- Jupyter notebooks.
 │
 ├── pyproject.toml       <- Project configuration file
 │
