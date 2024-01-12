@@ -1,8 +1,9 @@
 from torch.utils.data import Dataset, DataLoader
 import torch
+import os
 
 class SpeechDataset(Dataset):
-    def __init__(self, train=True):
+    def __init__(self, train=True, dataset_path="data"):
         """
         Parameters
         ----------
@@ -10,13 +11,13 @@ class SpeechDataset(Dataset):
             If True, load the training set. Otherwise, load the test set.
         """
         if train:
-            self.data = torch.load("data/processed/train_images.pt")
+            self.data = torch.load(dataset_path+"/processed/train_images.pt")
             self.data = torch.cat([self.data, self.data, self.data], dim=1) # fake RGB
-            self.labels = torch.load("data/processed/train_labels.pt")
+            self.labels = torch.load(dataset_path+"/processed/train_labels.pt")
         else:
-            self.data = torch.load("data/processed/test_images.pt")
+            self.data = torch.load(dataset_path+"/processed/test_images.pt")
             self.data = torch.cat([self.data, self.data, self.data], dim=1) # fake RGB
-            self.labels = torch.load("data/processed/test_labels.pt")
+            self.labels = torch.load(dataset_path+"/processed/test_labels.pt")
         
     def __getitem__(self, index):
         return self.data[index], self.labels[index]
@@ -25,18 +26,16 @@ class SpeechDataset(Dataset):
         return len(self.data)
     
 
-def get_dataloaders(batch_size=64):
+def get_dataloaders(batch_size=64, dataset_path="data"):
     """
     Parameters
     ----------
     batch_size : int
         The batch size to use for the dataloaders.
     """
-    train_dataset = SpeechDataset(train=True)
-    test_dataset = SpeechDataset(train=False)
-
-    print("Number of training samples:", len(train_dataset))
-    print("Number of test samples:", len(test_dataset))
+    print('LISTDIR', os.listdir(), os.listdir('../../../'))
+    train_dataset = SpeechDataset(train=True, dataset_path=dataset_path)
+    test_dataset = SpeechDataset(train=False, dataset_path=dataset_path)
     
     train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
     test_dataloader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
