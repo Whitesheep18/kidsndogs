@@ -1,10 +1,10 @@
 steps:
     - name: 'gcr.io/cloud-builders/docker'
-      args: ['build', '-t', 'gcr.io/kidsndogs/train_model', '.']
+      args: ['build', '-f', 'dockerfiles/train_model.dockerfile','-t', 'gcr.io/kidsndogs/train_model', '.']
     - name: 'gcr.io/cloud-builders/docker'
       args: ['push', 'gcr.io/kidsndogs/train_model']
 
     - name: 'gcr.io/cloud-builders/docker'
-      args: ['build', '-t', 'gcr.io/kidsndogs/predict_model', '.']
+      args: ['build', '-f', 'dockerfiles/predict_model.dockerfile', '-t', 'gcr.io/kidsndogs/predict_model', '.']
     - name: 'gcr.io/cloud-builders/docker'
       args: ['push', 'gcr.io/kidsndogs/predict_model']
