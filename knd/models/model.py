@@ -5,7 +5,7 @@ import pytorch_lightning as pl
 from torchmetrics.classification import Accuracy
 
 class DummyNet(pl.LightningModule):
-    def __init__(self, lr = 0.0001, n_hidden = 512):
+    def __init__(self, lr = 0.0001, n_hidden = 512, dropout=0.2):
         super().__init__()
         self.net = vgg19(pretrained=True)
         for param in self.net.parameters():
@@ -17,7 +17,7 @@ class DummyNet(pl.LightningModule):
         model_output_features = self.net.classifier[6].in_features
         self.net.classifier[6] = nn.Sequential(nn.Linear(model_output_features, n_hidden),
                                     nn.ReLU(),
-                                    nn.Dropout(0.2),
+                                    nn.Dropout(dropout),
                                     nn.Linear(n_hidden, num_emotions))
         self.loss = nn.CrossEntropyLoss()
         self.lr = lr
