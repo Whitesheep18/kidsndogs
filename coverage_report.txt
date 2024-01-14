@@ -1,0 +1,12 @@
+Name                              Stmts   Miss  Cover
+-----------------------------------------------------
+knd\__init__.py                       0      0   100%
+knd\data\__init__.py                  0      0   100%
+knd\data\dataloader.py               29      5    83%
+knd\models\__init__.py                0      0   100%
+knd\models\model.py                  54     25    54%
+tests\__init__.py                     4      0   100%
+tests\test_dataloader.py             17      1    94%
+tests\test_modelconstruction.py      19      1    95%
+-----------------------------------------------------
+TOTAL                               123     32    74%
