@@ -1,0 +1,38 @@
+name: "Run tests"
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      # This step checks out your repository under $GITHUB_WORKSPACE, so the job can access it.
+
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+      # This step sets up a Python 3.8 environment.
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install -r requirements_tests.txt
+      # This step upgrades pip and installs your project's dependencies.
+      # 'requirements.txt' should list your project's dependencies,
+      # and 'requirements_tests.txt' should list dependencies specific to testing.
+
+    - name: Test with pytest
+      run: |
+        pip install pytest
+        pytest -v
+      # This step installs pytest if it's not already installed and runs tests in verbose mode.
