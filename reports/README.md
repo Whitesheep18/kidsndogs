@@ -129,7 +129,7 @@ s164590, s220034, s232437, s220817
 >
 > Answer:
 
---- question 3 fill here ---
+In the modeling part, we used torchaudio for handling sound samples and torchvision for modeling based on spectrograms. Furthermore, we used torchmetrics for evaluating our model. For version control we use git and dvc (for data) and host our repo on Github. We containerized the project using docker and placed the final image on Docker Hub. For logging we used wandb and set up experiments using Hydra. To ensure code quality we used ruff for linting, pytest for unit tests and Github Actions to continuously integrate changes.
 
 ## Coding environment
 
@@ -148,7 +148,12 @@ s164590, s220034, s232437, s220817
 >
 > Answer:
 
---- question 4 fill here ---
+We control the dependencies and python interpreter using Conda that enables us to construct reproducible virtual environments. Docker is used to create a container that contains all the dependencies and code that we need to run our code. The packages required can be found in the requirements.txt file which auto-generated using the ```pipreqs``` command and is placed in the top folder in the cookiecutter structure. To get a complete copy of our development environment, one would have to run the following commands:
+
+```
+got clone git@github.com:Whitesheep18/kidsndogs.git
+docker build -f train_model.dockerfile . -t kidsndogs:latest
+```
 
 ### Question 5
 
@@ -163,7 +168,7 @@ s164590, s220034, s232437, s220817
 > *experiments.*
 > Answer:
 
---- question 5 fill here ---
+From the coockiecutter template we filled out most folders except from the notebooks folder, which was removed since jupyter notebooks were not used for this project. We added a dockerfiles folder that includes the dockerfiles needed to build images for training and inference of the model. We did not use the src/visualizations folder since wandb was used for visualizing results. 
 
 ### Question 6
 
@@ -174,7 +179,7 @@ s164590, s220034, s232437, s220817
 >
 > Answer:
 
---- question 6 fill here ---
+**TO DO**
 
 ## Version control
 
