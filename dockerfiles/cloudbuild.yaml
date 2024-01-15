@@ -8,3 +8,8 @@ steps:
       args: ['build', '-f', 'dockerfiles/predict_model.dockerfile', '-t', 'gcr.io/kidsndogs/predict_model', '.']
     - name: 'gcr.io/cloud-builders/docker'
       args: ['push', 'gcr.io/kidsndogs/predict_model']
+
+    - name: 'gcr.io/cloud-builders/docker'
+      args: ['build', '-f', 'dockerfiles/predict_api.dockerfile', '-t', 'gcr.io/kidsndogs/predict_api', '.']
+    - name: 'gcr.io/cloud-builders/docker'
+      args: ['push', 'gcr.io/kidsndogs/predict_api']
