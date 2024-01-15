@@ -28,7 +28,7 @@ async def read_file(file: UploadFile = File(...)):
         disk_file.write(file_bytes)
         print(f"Received file named {file.filename} containing {len(file_bytes)} bytes. ")
 
-    prediction = predict(local_path, "artifacts/model-v1n364uo:v9/model.ckpt")
+    prediction = predict(local_path, "models/best_model.ckpt")
 
     response = {
         "input": file,
