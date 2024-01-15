@@ -148,12 +148,15 @@ In the modeling part, we used torchaudio for handling sound samples and torchvis
 >
 > Answer:
 
-We control the dependencies and python interpreter using Conda that enables us to construct reproducible virtual environments. Docker is used to create a container that contains all the dependencies and code that we need to run our code. The packages required can be found in the requirements.txt file which auto-generated using the ```pipreqs``` command and is placed in the top folder in the cookiecutter structure. To get a complete copy of our development environment, one would have to run the following commands:
-
-```
-got clone git@github.com:Whitesheep18/kidsndogs.git
-docker build -f train_model.dockerfile . -t kidsndogs:latest
-```
+We used conda for managing our dependencies. We continuously built up the requirements.txt file, which we used to create a conda environment called knd. To get a complete copy of our development environment a new team memeber would have to 
+1. Start a linux terminal with anaconda/miniconda installed
+2. Clone this repository with git clone git@github.com:Whitesheep18/kidsndogs.git
+3. run `make create_enviroment` to create a conda environment called knd
+4. run `conda activate knd` to activate this environment
+5. run `make requirements` to install all required packages
+6. run `dvc pull` to get the latest raw and processed data
+We also ran pipreqs as a sanity check at the end of the project.
+One can also build the image with docker build -f dockerfiles/train_model.dockerfile . -t kidsndogs:latest
 
 ### Question 5
 
@@ -179,7 +182,7 @@ From the coockiecutter template we filled out most folders except from the noteb
 >
 > Answer:
 
-**TO DO**
+We have implemented branch protection rule to require a pull request before merging into main with at least one collaborators approval of the changes. This reduces the likelihood of errors as well as encourages knowledge sharing. It can also play a role in tracability.
 
 ## Version control
 
@@ -278,7 +281,15 @@ From the coockiecutter template we filled out most folders except from the noteb
 >
 > Answer:
 
---- question 12 fill here ---
+We used hydra to configure our experiments. The config files for experiments are found in configs/experiemnts. By running 
+
+`python knd/train_model.py`
+
+one could run the default experiement, corresponding to exp1.yaml. By running 
+
+`python knd/train_model.py experiment=<name-of-experiement>`
+
+one would run another one of the experiemnt configurations placed in the experiments folder eg. experiment=exp2.
 
 ### Question 13
 
@@ -293,7 +304,9 @@ From the coockiecutter template we filled out most folders except from the noteb
 >
 > Answer:
 
---- question 13 fill here ---
+We made use of config files as it is described above. Whenever an experiment runs, the hyperparameters in the hydra config file gets inserted to the model and the WandbLogger makes sure to save these hyperparameters in wandb. This way it is easy to see what hyperparameters a model training run had. It is easy to trace runs through wandb, where one can see the logged metrics along the parameters used under "Config" in run_name/Overview and other information such as who ran the model when and at what commit of our repository. To reproduce an experiment one would have to know which config file refers to that experiment (or potentially write one that with the configuration that needs to be reproduced) and run:
+
+`python knd/train_model.py experiment=<name-of-experiement>`
 
 ### Question 14
 
@@ -310,7 +323,7 @@ From the coockiecutter template we filled out most folders except from the noteb
 >
 > Answer:
 
---- question 14 fill here ---
+Find the [train accuracy](figures/train_acc.png) and the [validation accuracy](figures/val_acc.png) in figures/. The run gallant-resonance-16 corresponds to exp1 while confused-river-17 corresponds to exp2.
 
 ### Question 15
 

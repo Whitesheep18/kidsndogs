@@ -184,3 +184,5 @@ data/
 lightning_logs/
 configs/
 outputs/
+artifacts/
+tmp/
