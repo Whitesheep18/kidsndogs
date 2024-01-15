@@ -10,7 +10,7 @@ COPY requirements.txt requirements.txt
 COPY requirements_dev.txt requirements_dev.txt
 COPY pyproject.toml pyproject.toml
 COPY knd/ knd/
-COPY artifacts/ artifacts/
+COPY models/ models/
 COPY api.py api.py
 
 WORKDIR /

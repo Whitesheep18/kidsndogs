@@ -5,7 +5,7 @@ def get_best_model_wandb():
     # TODO: Get the best model from wandb by accuracy or F1 score
     return 'team-perfect-pitch/kidsndogs/model-v1n364uo:v9'
 
-if __name__ == '__main__':
+def download_best_model():
     run = wandb.init()
     best_model_path = get_best_model_wandb()
     artifact = run.use_artifact(best_model_path, type='model')
@@ -17,3 +17,6 @@ if __name__ == '__main__':
     # move model from artifact dir to models dir
     os.rename(os.path.join(artifact_dir, "model.ckpt"), 'models/best_model.ckpt')
 
+
+if __name__ == '__main__':
+    download_best_model()
