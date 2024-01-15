@@ -129,7 +129,7 @@ s164590, s220034, s232437, s220817
 >
 > Answer:
 
---- question 3 fill here ---
+In the modeling part, we used torchaudio for handling sound samples and torchvision for modeling based on spectrograms. Furthermore, we used torchmetrics for evaluating our model. For version control we use git and dvc (for data) and host our repo on Github. We containerized the project using docker and placed the final image on Docker Hub. For logging we used wandb and set up experiments using Hydra. To ensure code quality we used ruff for linting, pytest for unit tests and Github Actions to continuously integrate changes.
 
 ## Coding environment
 
@@ -150,13 +150,13 @@ s164590, s220034, s232437, s220817
 
 We used conda for managing our dependencies. We continuously built up the requirements.txt file, which we used to create a conda environment called knd. To get a complete copy of our development environment a new team memeber would have to 
 1. Start a linux terminal with anaconda/miniconda installed
-2. Clone this repository
+2. Clone this repository with git clone git@github.com:Whitesheep18/kidsndogs.git
 3. run `make create_enviroment` to create a conda environment called knd
 4. run `conda activate knd` to activate this environment
 5. run `make requirements` to install all required packages
 6. run `dvc pull` to get the latest raw and processed data
 We also ran pipreqs as a sanity check at the end of the project.
-
+One can also build the image with docker build -f dockerfiles/train_model.dockerfile . -t kidsndogs:latest
 
 ### Question 5
 
@@ -171,7 +171,7 @@ We also ran pipreqs as a sanity check at the end of the project.
 > *experiments.*
 > Answer:
 
-From the cookiecutter template we have filled out the knd/data/make_dataset.py file, as well as added a dataloader.py file. We have removed the notebooks folder entirely. We have added a configs folder for storing our hyperparamenters for Hydra. We have filled out the existing knd/models/model.py file with our pytorch module and the knd/train_model.py file. We added a cloudbuild.yaml file to the provided dockerfiles folder and filled out the tests folder with python files. Additionally we kept the provided data and models folders empty but part of our repo for local artifact storage.
+From the coockiecutter template we filled out most folders except from the notebooks folder, which was removed since jupyter notebooks were not used for this project. We added a dockerfiles folder that includes the dockerfiles needed to build images for training and inference of the model. We did not use the src/visualizations folder since wandb was used for visualizing results. 
 
 ### Question 6
 
