@@ -3,6 +3,14 @@ from http import HTTPStatus
 from typing import Optional
 import os
 from knd.predict_model import predict
+import logging
+
+# when local:
+# uvicorn --reload --port 8080 iris_fastapi:app
+
+# as a docker container:
+# docker build -f dockerfiles/Dockerfile -t predict_api:latest .
+# docker run -p 8080:8080 predict_api:latest
 
 app = FastAPI()
 

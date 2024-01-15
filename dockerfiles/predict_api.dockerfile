@@ -12,10 +12,11 @@ COPY pyproject.toml pyproject.toml
 COPY knd/ knd/
 COPY models/ models/
 COPY api.py api.py
+COPY download_model_and_run_api.sh download_model_and_run_api.sh
 
 WORKDIR /
 RUN pip install -r requirements.txt --no-cache-dir
 RUN pip install -e . --no-deps --no-cache-dir
 RUN pip install -r requirements_dev.txt --no-cache-dir
 
-CMD exec uvicorn api:app --port 8080 --host 0.0.0.0 --workers 1
+CMD exec ./download_model_and_run_api.sh

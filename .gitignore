@@ -186,4 +186,4 @@ configs/
 outputs/
 artifacts/
 tmp/
-models/
+models/*model*
