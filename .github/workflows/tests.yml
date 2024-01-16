@@ -39,17 +39,3 @@ jobs:
       run: |
           pip install pytest
           pytest -v
-  
-  
-  
-  
-  
-  
-  
-  
-
-    - name: Test with pytest
-      run: |
-        pip install pytest
-        pytest -v
-      # This step installs pytest if it's not already installed and runs tests in verbose mode.
