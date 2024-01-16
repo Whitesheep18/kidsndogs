@@ -3,6 +3,14 @@ from http import HTTPStatus
 from typing import Optional
 import os
 from knd.predict_model import predict
+import logging
+
+# when local:
+# uvicorn --reload --port 8080 iris_fastapi:app
+
+# as a docker container:
+# docker build -f dockerfiles/Dockerfile -t predict_api:latest .
+# docker run -p 8080:8080 predict_api:latest
 
 app = FastAPI()
 
@@ -28,7 +36,7 @@ async def read_file(file: UploadFile = File(...)):
         disk_file.write(file_bytes)
         print(f"Received file named {file.filename} containing {len(file_bytes)} bytes. ")
 
-    prediction = predict(local_path, "artifacts/model-v1n364uo:v9/model.ckpt")
+    prediction = predict(local_path, "models/best_model.ckpt")
 
     response = {
         "input": file,
