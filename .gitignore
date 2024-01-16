@@ -46,6 +46,7 @@ MANIFEST
 lightning_logs/
 wandb/
 kidsndogs/
+dvc/cache/
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
