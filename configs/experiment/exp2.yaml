@@ -1,0 +1,5 @@
+dataset_path: ../../../data
+lr: 0.001
+n_epochs: 10
+n_hidden: 256
+dropout: 0.3
