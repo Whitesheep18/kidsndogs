@@ -46,6 +46,7 @@ MANIFEST
 lightning_logs/
 wandb/
 kidsndogs/
+dvc/cache/
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -182,7 +183,7 @@ cython_debug/
 data/
 
 lightning_logs/
-configs/
 outputs/
 artifacts/
 tmp/
+models/*model*

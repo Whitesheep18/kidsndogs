@@ -129,7 +129,7 @@ s164590, s220034, s232437, s220817
 >
 > Answer:
 
---- question 3 fill here ---
+In the modeling part, we used torchaudio for handling sound samples and torchvision for modeling based on spectrograms. Furthermore, we used torchmetrics for evaluating our model. For version control we use git and dvc (for data) and host our repo on Github. We containerized the project using docker and placed the final image on Docker Hub. For logging we used wandb and set up experiments using Hydra. To ensure code quality we used ruff for linting, pytest for unit tests and Github Actions to continuously integrate changes.
 
 ## Coding environment
 
@@ -148,7 +148,15 @@ s164590, s220034, s232437, s220817
 >
 > Answer:
 
---- question 4 fill here ---
+We used conda for managing our dependencies. We continuously built up the requirements.txt file, which we used to create a conda environment called knd. To get a complete copy of our development environment a new team memeber would have to 
+1. Start a linux terminal with anaconda/miniconda installed
+2. Clone this repository with git clone git@github.com:Whitesheep18/kidsndogs.git
+3. run `make create_enviroment` to create a conda environment called knd
+4. run `conda activate knd` to activate this environment
+5. run `make requirements` to install all required packages
+6. run `dvc pull` to get the latest raw and processed data
+We also ran pipreqs as a sanity check at the end of the project.
+One can also build the image with docker build -f dockerfiles/train_model.dockerfile . -t kidsndogs:latest
 
 ### Question 5
 
@@ -163,7 +171,7 @@ s164590, s220034, s232437, s220817
 > *experiments.*
 > Answer:
 
---- question 5 fill here ---
+From the coockiecutter template we filled out most folders except from the notebooks folder, which was removed since jupyter notebooks were not used for this project. We added a dockerfiles folder that includes the dockerfiles needed to build images for training and inference of the model. We did not use the src/visualizations folder since wandb was used for visualizing results. 
 
 ### Question 6
 
@@ -174,7 +182,7 @@ s164590, s220034, s232437, s220817
 >
 > Answer:
 
---- question 6 fill here ---
+We have implemented branch protection rule to require a pull request before merging into main with at least one collaborators approval of the changes. This reduces the likelihood of errors as well as encourages knowledge sharing. It can also play a role in tracability.
 
 ## Version control
 
@@ -273,7 +281,15 @@ s164590, s220034, s232437, s220817
 >
 > Answer:
 
---- question 12 fill here ---
+We used hydra to configure our experiments. The config files for experiments are found in configs/experiemnts. By running 
+
+`python knd/train_model.py`
+
+one could run the default experiement, corresponding to exp1.yaml. By running 
+
+`python knd/train_model.py experiment=<name-of-experiement>`
+
+one would run another one of the experiemnt configurations placed in the experiments folder eg. experiment=exp2.
 
 ### Question 13
 
@@ -288,7 +304,9 @@ s164590, s220034, s232437, s220817
 >
 > Answer:
 
---- question 13 fill here ---
+We made use of config files as it is described above. Whenever an experiment runs, the hyperparameters in the hydra config file gets inserted to the model and the WandbLogger makes sure to save these hyperparameters in wandb. This way it is easy to see what hyperparameters a model training run had. It is easy to trace runs through wandb, where one can see the logged metrics along the parameters used under "Config" in run_name/Overview and other information such as who ran the model when and at what commit of our repository. To reproduce an experiment one would have to know which config file refers to that experiment (or potentially write one that with the configuration that needs to be reproduced) and run:
+
+`python knd/train_model.py experiment=<name-of-experiement>`
 
 ### Question 14
 
@@ -305,7 +323,7 @@ s164590, s220034, s232437, s220817
 >
 > Answer:
 
---- question 14 fill here ---
+Find the [train accuracy](figures/train_acc.png) and the [validation accuracy](figures/val_acc.png) in figures/. The run gallant-resonance-16 corresponds to exp1 while confused-river-17 corresponds to exp2.
 
 ### Question 15
 
