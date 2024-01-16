@@ -29,6 +29,24 @@ jobs:
       # This step upgrades pip and installs your project's dependencies.
       # 'requirements.txt' should list your project's dependencies,
       # and 'requirements_tests.txt' should list dependencies specific to testing.
+    - uses: iterative/setup-dvc@v1
+    - name: Get data
+      run: dvc pull
+      env:
+        GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
+
+    - name: Test with pytest
+      run: |
+          pip install pytest
+          pytest -v
+  
+  
+  
+  
+  
+  
+  
+  
 
     - name: Test with pytest
       run: |
