@@ -16,3 +16,4 @@ mkdocstrings[python]>=0.18
 fastapi
 python-multipart
 uvicorn[standard]
+evidently
