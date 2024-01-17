@@ -182,7 +182,7 @@ From the coockiecutter template we filled out most folders except from the noteb
 >
 > Answer:
 
-We have implemented branch protection rule to require a pull request before merging into main with at least one collaborators approval of the changes. This reduces the likelihood of errors as well as encourages knowledge sharing. It can also play a role in tracability.
+We have implemented branch protection rule to require a pull request before merging into main with at least one collaborator's approval of the changes. This reduces the likelihood of errors as well as encourages knowledge sharing (it forces minimum one group member other than the person who made the changes to look through the new code). It also helps with tracability as our CI/CD pipelines depend on the act of pushing to main (pull requests). Fx. if a cloud-build function fails, we know (from the timestamp) which pull request caused the error. 
 
 ## Version control
 
@@ -222,7 +222,25 @@ In total, three tests have been implemented in two separate scripts:
 >
 > Answer:
 
---- question 8 fill here ---
+The total code coverage of our code is 72%. Although this is a good number, it's important to note areas where the coverage could be improved. Specifically, `knd\data\dataloader.py` and `knd\models\model.py` have lower coverage percentages, indicating potential untested logic paths.
+
+Even if our code coverage reached 100%, it wouldn't guarantee the code is error-free. Code coverage metrics, while useful, only indicate that the code has been executed during tests, not that all use cases or edge cases have been adequately covered. For instance, our tests in `test_dataloader.py` and `test_modelconstruction.py` focus on specific aspects like the shape of the data and model initialization parameters, but they might not cover every possible input scenario, edge case, or integration point with other systems.
+
+Complete coverage can give a false sense of security. It's crucial to complement high coverage with thorough test cases that cover a wide range of inputs, including edge cases, and to conduct other forms of testing such as integration testing, performance testing, and user acceptance testing to ensure the reliability and robustness of the code.
+
+| Name                            | Stmts | Miss | Branch | BrPart | Cover | Missing                                      |
+|---------------------------------|-------|------|--------|--------|-------|----------------------------------------------|
+| knd\__init__.py                 | 0     | 0    | 0      | 0      | 100%  |                                              |
+| knd\data\__init__.py            | 0     | 0    | 0      | 0      | 100%  |                                              |
+| knd\data\dataloader.py          | 29    | 5    | 6      | 1      | 77%   | 46-52                                        |
+| knd\models\__init__.py          | 0     | 0    | 0      | 0      | 100%  |                                              |
+| knd\models\model.py             | 54    | 25   | 4      | 1      | 55%   | 34-35, 38-48, 52, 55-65, 69, 73-78           |
+| tests\__init__.py               | 4     | 0    | 0      | 0      | 100%  |                                              |
+| tests\test_dataloader.py        | 17    | 1    | 6      | 3      | 83%   | 15->20, 20->exit, 26                         |
+| tests\test_modelconstruction.py | 19    | 1    | 2      | 1      | 90%   | 55                                           |
+|---------------------------------|-------|------|--------|--------|-------|----------------------------------------------|
+| TOTAL                           | 123   | 32   | 18     | 6      | 72%   |                                              |
+
 
 ### Question 9
 
@@ -236,8 +254,16 @@ In total, three tests have been implemented in two separate scripts:
 > *addition to the main branch. To merge code we ...*
 >
 > Answer:
+>
+> 
+Yes, our workflow extensively utilized branches and pull requests, aligning with best practices in version control and ensuring a collaborative and error-resistant development process. Specifically, we implemented branch protection on the main branch, meaning that direct pushes were prohibited, and updates were only allowed via pull requests. This approach ensured that each change was reviewed, and at least one other team member had to approve the pull request before merging. This facilitated peer review, leading to higher code quality and shared code ownership.
 
-We made use of both branches and pull requests in our project. A branch was created for implementing major features such as unit tests, creating docker images and implementing logging with wandb. We used branch protection on the main branch such that one other team member had to check and approve a pull request before it was merged to main. Furthermore, we tried to follow the guidelines and pull/push often to avoid merge conflicts. 
+Additionally, pull requests were configured to merge only if the automated tests passed, ensuring that new changes didn't introduce regressions or break existing functionality. This practice significantly improved our code stability and reliability.
+
+Moreover, we adopted a feature-branch workflow, creating separate branches for each addition or improvement, such as 'docker', 'profiling', 'testing', and 'dvc'. This method allowed us to work on different features or fixes simultaneously without interfering with the main codebase or each other's work. Each branch focused on a specific task, making our development process more organized, manageable, and reducing the risk of conflicts. This branching strategy, coupled with pull requests and code reviews, greatly enhanced our version control, facilitateting continuous integration.
+
+
+
 
 ### Question 10
 
@@ -359,7 +385,9 @@ Find the [train accuracy](figures/train_acc.png) and the [validation accuracy](f
 >
 > Answer:
 
---- question 16 fill here ---
+For debugging during our experiments, we adopted a hybrid approach. Locally, we primarily utilized the built-in debugger in Visual Studio Code, which offers an intuitive and informative environment for identifying and resolving issues. In scenarios where the built-in debugger was not sufficient, we used traditional print statement debugging. This method, though simple, proved effective in tracing and understanding the flow of data and the state of variables at various execution points. We also looked at logs while moving the training process to the cloud.
+In terms of code optimization and performance, we recognized the importance of profiling. We conducted a comprehensive profiling of our main code using PyTorch's built-in tools. The profiling data revealed that certain functions, notably load_model, were significant time consumers. Therefore, we implemented changes to optimize this function and avoid bottlenecks. The revised load_model function now incorporates a more efficient state loading strategy. In the updated implementation, we streamlined the process of loading the model's state dictionary from the checkpoint. By refining how we access and load the checkpoint data, we minimized I/O operations and reduced the overall loading time. 
+
 
 ## Working in the cloud
 
@@ -376,13 +404,7 @@ Find the [train accuracy](figures/train_acc.png) and the [validation accuracy](f
 >
 > Answer:
 
-* Cloud Build: Building Docker images
-* Cloud Storage: for storing and versioning data in a GCP bucket.
-* Triggers: To automatically build images when changes are made to main. 
-* Container Registry: Images are stored in containers.
-* Cloud Engine: To create and run virtual machines.
-* Cloud Run: deploys the model in GCP.
-* Vertex AI: automatically create a VM for us, launch our experiments and then close the VM afterwards.
+--- question 17 fill here ---
 
 ### Question 18
 
@@ -440,7 +462,7 @@ Find the [train accuracy](figures/train_acc.png) and the [validation accuracy](f
 >
 > Answer:
 
---- question 22 fill here ---
+We have deployed our predict api in the cloud using Cloud Run. The image of the container predict_api is automatically created by a trigger in Cloud Build, then pulled into Cloud Run. You can view the api through https://kidsndogs.dk/docs (which is a domain we bought) or https://predict-api-2tq5wj26ma-lz.a.run.app/docs (which is the assigned gcp domain) where you can try to upload a .wav file of the correct length (one is included in tests/) under POST "/predict". It may take some time to complete the first request, but the consequtive requests have lower latency. (This issue is described in an github issue). The root directory is just showing a health scheck.
 
 ### Question 23
 

@@ -39,3 +39,18 @@ jobs:
       run: |
           pip install pytest
           pytest -v
+
+    - name: Install Profiling Package
+      run: pip install cProfilev
+      # This step installs the cProfilev package which is a Python profiler.
+
+    - name: Run Profiler
+      run: python -m cProfilev -o profile_output your_script.py
+      # This step runs the profiler on your_script.py and outputs the result to profile_output.
+    
+    - name: Upload profiling output
+      uses: actions/upload-artifact@v2
+      with:
+        name: profiling-output
+        path: profile_output
+        # This step uploads the profiling output as an artifact of the workflow run.
