@@ -381,7 +381,7 @@ Find the [train accuracy](figures/train_acc.png) and the [validation accuracy](f
 * Triggers: To automatically build images when changes are made to main. 
 * Container Registry: Images are stored in containers.
 * Cloud Engine: To create and run virtual machines.
-* Cloud Run: deploys the model in GCP.
+* Cloud Run: deploys the model in GCP. 
 * Vertex AI: automatically create a VM for us, launch our experiments and then close the VM afterwards.
 
 ### Question 18
