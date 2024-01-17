@@ -7,3 +7,4 @@ scikit-learn
 wandb
 hydra-core
 google-cloud-storage==1.43.0
+

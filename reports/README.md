@@ -201,7 +201,13 @@ We have implemented branch protection rule to require a pull request before merg
 >
 > Answer:
 
---- question 7 fill here ---
+In total, three tests have been implemented in two separate scripts:
+1. **`test_data_loading` in `test_dataloader.py`**:
+   - This test checks the functionality of the data loaders. It ensures that both the training and testing dataloaders are correctly loading batches of data and that these batches match the expected number of samples.
+2. **`test_model_initialization` in `TestDummyNetModel`**:
+   - A unit test within the `TestDummyNetModel` class. It verifies the proper initialization of the `DummyNet` model with specified parameters such as learning rate, number of hidden units, and dropout rate.
+3. **`test_model_output_shape` in `TestDummyNetModel`**:
+   - Another test in the `TestDummyNetModel` class. It checks if the `DummyNet` model produces output tensors of the correct shape.
 
 ### Question 8
 
