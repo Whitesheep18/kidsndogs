@@ -383,7 +383,9 @@ Find the [train accuracy](figures/train_acc.png) and the [validation accuracy](f
 >
 > Answer:
 
---- question 16 fill here ---
+For debugging during our experiments, we adopted a hybrid approach. Locally, we primarily utilized the built-in debugger in Visual Studio Code, which offers an intuitive and informative environment for identifying and resolving issues. In scenarios where the built-in debugger was not sufficient, we used traditional print statement debugging. This method, though simple, proved effective in tracing and understanding the flow of data and the state of variables at various execution points. We also looked at logs while moving the training process to the cloud.
+In terms of code optimization and performance, we recognized the importance of profiling. We conducted a comprehensive profiling of our main code using PyTorch's built-in tools. The profiling data revealed that certain functions, notably load_model, were significant time consumers. Therefore, we implemented changes to optimize this function and avoid bottlenecks. The revised load_model function now incorporates a more efficient state loading strategy. In the updated implementation, we streamlined the process of loading the model's state dictionary from the checkpoint. By refining how we access and load the checkpoint data, we minimized I/O operations and reduced the overall loading time. 
+
 
 ## Working in the cloud
 
