@@ -1,6 +1,7 @@
 import torch
 from knd.models.model import DummyNet
 import torchaudio
+from knd.constants import EMOTIONS
 
 
 def preprocess(mel_spectogram):    
@@ -94,16 +95,25 @@ def predict(audio_path, model_path):
 
     # run the model on the spectrogram
     model = load_model(model_path)
+
+    return predict_tensor(spectogram, model)
+
+
+def predict_tensor(spectogram, model):
+    """
+    Predicts the emotion from a Mel spectrogram using a PyTorch model.
+    """
+
     output = model(spectogram)
 
     # get the predicted class
     pred = torch.argmax(torch.softmax(output, dim=1), dim=1).item()
 
     # map the class to the corresponding emotion
-    emotions = ["neutral", "calm", "happy", "sad", "angry", "fearful", "disgust", "surprised"]
-    predicted_emotions = emotions[pred]
+    predicted_emotions = EMOTIONS[pred]
 
     return predicted_emotions
+
 
 def load_model(checkpoint_path):
     """
