@@ -254,6 +254,8 @@ Complete coverage can give a false sense of security. It's crucial to complement
 > *addition to the main branch. To merge code we ...*
 >
 > Answer:
+>
+> 
 Yes, our workflow extensively utilized branches and pull requests, aligning with best practices in version control and ensuring a collaborative and error-resistant development process. Specifically, we implemented branch protection on the main branch, meaning that direct pushes were prohibited, and updates were only allowed via pull requests. This approach ensured that each change was reviewed, and at least one other team member had to approve the pull request before merging. This facilitated peer review, leading to higher code quality and shared code ownership.
 
 Additionally, pull requests were configured to merge only if the automated tests passed, ensuring that new changes didn't introduce regressions or break existing functionality. This practice significantly improved our code stability and reliability.
