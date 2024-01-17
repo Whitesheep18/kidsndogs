@@ -4,20 +4,17 @@ from knd.data.dataloader import get_dataloaders
 from pytorch_lightning.loggers import WandbLogger
 import hydra
 from omegaconf import DictConfig
+import wandb
+import os
 
-try:
-    import wandb
-    with_logging = True
-except ImportError:
-    with_logging = False
-
-
-if not with_logging or wandb.api.api_key is None:
-    # likely docker container
+if wandb.api.api_key is None:
+    # likely docker container, to enable login run:
+    #docker run --env WANDB_API_KEY=<api_key> ...
     logger = None
 else:
-    # likely local machine
-    logger = WandbLogger(log_model="all", project="kidsndogs", entity="team-perfect-pitch")
+    # likely local machine with wandb logged in
+    tags = ['api_key_as_env_var'] if os.environ.get('WANDB_API_KEY') is not None else None    
+    logger = WandbLogger(log_model="all", project="kidsndogs", entity="team-perfect-pitch", tags=tags)
 
 @hydra.main(config_path="../configs", config_name="default_config")
 def train(cfg: DictConfig):
@@ -34,4 +31,5 @@ def train(cfg: DictConfig):
 
 
 if __name__ == "__main__":
+    print('hey')
     train()
