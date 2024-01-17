@@ -1,7 +1,15 @@
 import torch
 from knd.models.model import DummyNet
 import torchaudio
-
+import  wandb
+import torch
+import torchvision.models as models
+from torch.profiler import profile, ProfilerActivity
+import pstats
+from torch.autograd.profiler import record_function
+from torch.profiler import profile, ProfilerActivity
+from torch.profiler import profile, tensorboard_trace_handler
+import time
 
 def preprocess(mel_spectogram):    
     """
@@ -132,9 +140,36 @@ def load_model(checkpoint_path):
 
 
 if __name__ == "__main__":
-    # test the model
-    audio_path = "data/raw/Actor_01/03-01-01-01-01-01-01.wav"
-    model_path = "artifacts/model-v1n364uo:v9/model.ckpt"
+    # Ask the user for the path to the .wav file
+    audio_path = input("Enter the path to the .wav file: ")
+    
+    # Ask the user for the path to the PyTorch model file
+    model_path = input("Enter the path to the PyTorch model file (e.g., models/best_model.ckpt): ")
 
-    prediction = predict(audio_path, model_path)
-    print(f"Prediction: {prediction}")
+    save_path = f"./log/profile_output_{int(time.time())}.json"
+
+    with profile(activities=[ProfilerActivity.CPU], record_shapes=True, on_trace_ready=tensorboard_trace_handler(save_path)) as prof:
+        with record_function("full_predict"):
+            # Call your predict function, which in turn calls other functions
+            with record_function("get_data"):
+                spectogram = get_data(audio_path)
+            
+            with record_function("load_model"):
+                model = load_model(model_path)
+
+            with record_function("model_inference"):
+                output = model(spectogram)
+
+            # get the predicted class
+            with record_function("prediction_postprocessing"):
+                pred = torch.argmax(torch.softmax(output, dim=1), dim=1).item()
+
+            # map the class to the corresponding emotion
+            with record_function("emotion_mapping"):
+                emotions = ["neutral", "calm", "happy", "sad", "angry", "fearful", "disgust", "surprised"]
+                predicted_emotions = emotions[pred]
+
+    print(f"Prediction: {predicted_emotions}")
+
+    # Print profiling results for functions called within predict
+    print(prof.key_averages(group_by_stack_n=2).table(sort_by="cpu_time_total", row_limit=30))

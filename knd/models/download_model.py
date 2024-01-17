@@ -49,6 +49,6 @@ def download_best_model(wandb=True):
 if __name__ == '__main__':
     if not os.path.exists("models/best_model.ckpt"):
         print("model does not exist")
-        download_best_model(wandb=False)
+        download_best_model(wandb=True)
     else:
         print("model already exists")

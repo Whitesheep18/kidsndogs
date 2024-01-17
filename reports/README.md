@@ -201,7 +201,11 @@ We have implemented branch protection rule to require a pull request before merg
 >
 > Answer:
 
+<<<<<<< HEAD
 rewrite the folloiwììwing better for my final report in 90-100 words: In total, three tests have been implemented in two separate scripts:
+=======
+In total, three tests have been implemented in two separate scripts:
+>>>>>>> 284cb08c96cbe1f2a89d84fea7041d74faf9e8b9
 1. **`test_data_loading` in `test_dataloader.py`**:
    - This test checks the functionality of the data loaders. It ensures that both the training and testing dataloaders are correctly loading batches of data and that these batches match the expected number of samples.
 2. **`test_model_initialization` in `TestDummyNetModel`**:
