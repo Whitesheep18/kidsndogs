@@ -107,8 +107,9 @@ async def monitoring():
     )
 
     data_drift_report.run(
-        reference_data=submit_stats_df[train_stats_df.columns],
-        current_data=train_stats_df,
+        reference_data=train_stats_df,
+        current_data=submit_stats_df[train_stats_df.columns],
+
         column_mapping=None,
     )
     data_drift_report.save_html("monitoring.html")
