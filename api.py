@@ -107,8 +107,8 @@ async def monitoring():
     )
 
     data_drift_report.run(
-        current_data=train_stats_df.iloc[20:],
         reference_data=submit_stats_df[train_stats_df.columns],
+        current_data=train_stats_df,
         column_mapping=None,
     )
     data_drift_report.save_html("monitoring.html")
