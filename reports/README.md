@@ -201,11 +201,7 @@ We have implemented branch protection rule to require a pull request before merg
 >
 > Answer:
 
-<<<<<<< HEAD
-rewrite the folloiwììwing better for my final report in 90-100 words: In total, three tests have been implemented in two separate scripts:
-=======
 In total, three tests have been implemented in two separate scripts:
->>>>>>> 284cb08c96cbe1f2a89d84fea7041d74faf9e8b9
 1. **`test_data_loading` in `test_dataloader.py`**:
    - This test checks the functionality of the data loaders. It ensures that both the training and testing dataloaders are correctly loading batches of data and that these batches match the expected number of samples.
 2. **`test_model_initialization` in `TestDummyNetModel`**:
@@ -241,7 +237,7 @@ In total, three tests have been implemented in two separate scripts:
 >
 > Answer:
 
-We made use of both branches and PRs in our project. The main branch functioned as the branch from which we wanted to deploy our containers from and thus had to be the "current best version" of the project. We mostly made "feature branches" that usually were about integrating a tool like the branch "wandb" or "dvcproj". We destroyed these branches when we completed the set of features related to that tool (and reopened them if it was neccessary). We also had branches that were kept continuously and these were related to running tasks such as the branches "report" and "unit-testing". We sometimes pulled the contents of "main" into them to keep them somewhat up to date.
+--- question 9 fill here ---
 
 ### Question 10
 
@@ -256,7 +252,7 @@ We made use of both branches and PRs in our project. The main branch functioned 
 >
 > Answer:
 
---- question 10 fill here ---
+We used DVC in our project initially using Google Drive and later with a GCP bucket. Data version control makes it easier to collaborate on the same dataset and tracking changes. It is useful to known which changes/updates have been made to the data and being able to perform a rollback, if necessary. In our project, the dataset was only updated once to include more data. In a bigger project running in the long-term, data versioning would be more beneficial. 
 
 ### Question 11
 
@@ -380,7 +376,7 @@ Find the [train accuracy](figures/train_acc.png) and the [validation accuracy](f
 >
 > Answer:
 
-We used the service Cloud Storage where we had a bucket with our data and current best model stored. Our docker images (trainer, predicter, api) were stored in Container Registry and were made using a trigger in Cloud Build. The docker images were used by Vertex AI :warning: TODO: James :warning: for model training and by Cloud Run for deploying the Api.
+--- question 17 fill here ---
 
 ### Question 18
 
@@ -404,7 +400,7 @@ We used the service Cloud Storage where we had a bucket with our data and curren
 >
 > Answer:
 
---- question 19 fill here ---
+![my_image](figures/bucket_details.png)
 
 ### Question 20
 
