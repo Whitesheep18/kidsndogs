@@ -201,7 +201,13 @@ We have implemented branch protection rule to require a pull request before merg
 >
 > Answer:
 
---- question 7 fill here ---
+In total, three tests have been implemented in two separate scripts:
+1. **`test_data_loading` in `test_dataloader.py`**:
+   - This test checks the functionality of the data loaders. It ensures that both the training and testing dataloaders are correctly loading batches of data and that these batches match the expected number of samples.
+2. **`test_model_initialization` in `TestDummyNetModel`**:
+   - A unit test within the `TestDummyNetModel` class. It verifies the proper initialization of the `DummyNet` model with specified parameters such as learning rate, number of hidden units, and dropout rate.
+3. **`test_model_output_shape` in `TestDummyNetModel`**:
+   - Another test in the `TestDummyNetModel` class. It checks if the `DummyNet` model produces output tensors of the correct shape.
 
 ### Question 8
 
@@ -231,7 +237,7 @@ We have implemented branch protection rule to require a pull request before merg
 >
 > Answer:
 
---- question 9 fill here ---
+We made use of both branches and pull requests in our project. A branch was created for implementing major features such as unit tests, creating docker images and implementing logging with wandb. We used branch protection on the main branch such that one other team member had to check and approve a pull request before it was merged to main. Furthermore, we tried to follow the guidelines and pull/push often to avoid merge conflicts. 
 
 ### Question 10
 
@@ -246,7 +252,7 @@ We have implemented branch protection rule to require a pull request before merg
 >
 > Answer:
 
---- question 10 fill here ---
+We used DVC in our project initially using Google Drive and later with a GCP bucket. Data version control makes it easier to collaborate on the same dataset and tracking changes. It is useful to known which changes/updates have been made to the data and being able to perform a rollback, if necessary. In our project, the dataset was only updated once to include more data. In a bigger project running in the long-term, data versioning would be more beneficial. 
 
 ### Question 11
 
@@ -370,7 +376,13 @@ Find the [train accuracy](figures/train_acc.png) and the [validation accuracy](f
 >
 > Answer:
 
---- question 17 fill here ---
+* Cloud Build: Building Docker images
+* Cloud Storage: for storing and versioning data in a GCP bucket.
+* Triggers: To automatically build images when changes are made to main. 
+* Container Registry: Images are stored in containers.
+* Cloud Engine: To create and run virtual machines.
+* Cloud Run: deploys the model in GCP.
+* Vertex AI: automatically create a VM for us, launch our experiments and then close the VM afterwards.
 
 ### Question 18
 
@@ -394,7 +406,7 @@ Find the [train accuracy](figures/train_acc.png) and the [validation accuracy](f
 >
 > Answer:
 
---- question 19 fill here ---
+![my_image](figures/bucket_details.png)
 
 ### Question 20
 
