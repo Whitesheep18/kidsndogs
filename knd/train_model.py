@@ -6,6 +6,7 @@ import hydra
 from omegaconf import DictConfig
 import wandb
 import os
+os.environ['HYDRA_FULL_ERROR'] = '1'
 
 if wandb.api.api_key is None:
     # likely docker container, to enable login run:
