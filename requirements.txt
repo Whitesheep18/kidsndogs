@@ -6,5 +6,5 @@ matplotlib
 scikit-learn
 wandb
 hydra-core
+torch_tb_profiler
 google-cloud-storage==1.43.0
-
