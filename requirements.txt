@@ -6,3 +6,4 @@ matplotlib
 scikit-learn
 wandb
 hydra-core
+snakeviz

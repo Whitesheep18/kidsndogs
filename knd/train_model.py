@@ -16,7 +16,7 @@ except ImportError:
 if not with_logging or wandb.api.api_key is None:
     # likely docker container
     logger = None
-else:
+else:   
     # likely local machine
     logger = WandbLogger(log_model="all", project="kidsndogs", entity="team-perfect-pitch")
 
