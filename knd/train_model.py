@@ -12,10 +12,12 @@ if wandb.api.api_key is None:
     # likely docker container, to enable login run:
     #docker run --env WANDB_API_KEY=<api_key> ...
     logger = None
+
 else:
     # likely local machine with wandb logged in
     tags = ['api_key_as_env_var'] if os.environ.get('WANDB_API_KEY') is not None else None    
     logger = WandbLogger(log_model="all", project="kidsndogs", entity="team-perfect-pitch", tags=tags)
+
 
 @hydra.main(config_path="../configs", config_name="default_config")
 def train(cfg: DictConfig):

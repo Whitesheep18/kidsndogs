@@ -140,9 +140,12 @@ def load_model(checkpoint_path):
 
 
 if __name__ == "__main__":
-    # Test the model
-    audio_path = "data/raw/Actor_01/03-01-01-01-01-01-01.wav"
-    model_path = "models/best_model.ckpt"
+    # Ask the user for the path to the .wav file
+    audio_path = input("Enter the path to the .wav file: ")
+    
+    # Ask the user for the path to the PyTorch model file
+    model_path = input("Enter the path to the PyTorch model file (e.g., models/best_model.ckpt): ")
+
     save_path = f"./log/profile_output_{int(time.time())}.json"
 
     with profile(activities=[ProfilerActivity.CPU], record_shapes=True, on_trace_ready=tensorboard_trace_handler(save_path)) as prof:
