@@ -222,7 +222,25 @@ In total, three tests have been implemented in two separate scripts:
 >
 > Answer:
 
---- question 8 fill here ---
+The total code coverage of our code is 72%. Although this is a good number, it's important to note areas where the coverage could be improved. Specifically, `knd\data\dataloader.py` and `knd\models\model.py` have lower coverage percentages, indicating potential untested logic paths.
+
+Even if our code coverage reached 100%, it wouldn't guarantee the code is error-free. Code coverage metrics, while useful, only indicate that the code has been executed during tests, not that all use cases or edge cases have been adequately covered. For instance, our tests in `test_dataloader.py` and `test_modelconstruction.py` focus on specific aspects like the shape of the data and model initialization parameters, but they might not cover every possible input scenario, edge case, or integration point with other systems.
+
+Complete coverage can give a false sense of security. It's crucial to complement high coverage with thorough test cases that cover a wide range of inputs, including edge cases, and to conduct other forms of testing such as integration testing, performance testing, and user acceptance testing to ensure the reliability and robustness of the code.
+
+| Name                            | Stmts | Miss | Branch | BrPart | Cover | Missing                                      |
+|---------------------------------|-------|------|--------|--------|-------|----------------------------------------------|
+| knd\__init__.py                 | 0     | 0    | 0      | 0      | 100%  |                                              |
+| knd\data\__init__.py            | 0     | 0    | 0      | 0      | 100%  |                                              |
+| knd\data\dataloader.py          | 29    | 5    | 6      | 1      | 77%   | 46-52                                        |
+| knd\models\__init__.py          | 0     | 0    | 0      | 0      | 100%  |                                              |
+| knd\models\model.py             | 54    | 25   | 4      | 1      | 55%   | 34-35, 38-48, 52, 55-65, 69, 73-78           |
+| tests\__init__.py               | 4     | 0    | 0      | 0      | 100%  |                                              |
+| tests\test_dataloader.py        | 17    | 1    | 6      | 3      | 83%   | 15->20, 20->exit, 26                         |
+| tests\test_modelconstruction.py | 19    | 1    | 2      | 1      | 90%   | 55                                           |
+|---------------------------------|-------|------|--------|--------|-------|----------------------------------------------|
+| TOTAL                           | 123   | 32   | 18     | 6      | 72%   |                                              |
+
 
 ### Question 9
 
