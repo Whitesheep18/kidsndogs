@@ -5,6 +5,8 @@ from knd.data.dataloader import get_dataloaders
 from pytorch_lightning.loggers import WandbLogger
 import hydra
 from omegaconf import DictConfig
+import os
+os.environ['HYDRA_FULL_ERROR'] = '1'
 
 try:
     import wandb
