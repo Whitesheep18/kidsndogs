@@ -182,7 +182,7 @@ From the coockiecutter template we filled out most folders except from the noteb
 >
 > Answer:
 
-We have implemented branch protection rule to require a pull request before merging into main with at least one collaborators approval of the changes. This reduces the likelihood of errors as well as encourages knowledge sharing. It can also play a role in tracability.
+We have implemented branch protection rule to require a pull request before merging into main with at least one collaborator's approval of the changes. This reduces the likelihood of errors as well as encourages knowledge sharing (it forces minimum one group member other than the person who made the changes to look through the new code). It also helps with tracability as our CI/CD pipelines depend on the act of pushing to main (pull requests). Fx. if a cloud-build function fails, we know (from the timestamp) which pull request caused the error. 
 
 ## Version control
 
@@ -237,7 +237,7 @@ rewrite the folloiwììwing better for my final report in 90-100 words: In total
 >
 > Answer:
 
---- question 9 fill here ---
+We made use of both branches and PRs in our project. The main branch functioned as the branch from which we wanted to deploy our containers from and thus had to be the "current best version" of the project. We mostly made "feature branches" that usually were about integrating a tool like the branch "wandb" or "dvcproj". We destroyed these branches when we completed the set of features related to that tool (and reopened them if it was neccessary). We also had branches that were kept continuously and these were related to running tasks such as the branches "report" and "unit-testing". We sometimes pulled the contents of "main" into them to keep them somewhat up to date.
 
 ### Question 10
 
@@ -376,7 +376,7 @@ Find the [train accuracy](figures/train_acc.png) and the [validation accuracy](f
 >
 > Answer:
 
---- question 17 fill here ---
+We used the service Cloud Storage where we had a bucket with our data and current best model stored. Our docker images (trainer, predicter, api) were stored in Container Registry and were made using a trigger in Cloud Build. The docker images were used by Vertex AI :warning: TODO: James :warning: for model training and by Cloud Run for deploying the Api.
 
 ### Question 18
 
@@ -434,7 +434,7 @@ Find the [train accuracy](figures/train_acc.png) and the [validation accuracy](f
 >
 > Answer:
 
---- question 22 fill here ---
+We have deployed our predict api in the cloud using Cloud Run. The image of the container predict_api is automatically created by a trigger in Cloud Build, then pulled into Cloud Run. You can view the api through https://kidsndogs.dk/docs (which is a domain we bought) or https://predict-api-2tq5wj26ma-lz.a.run.app/docs (which is the assigned gcp domain) where you can try to upload a .wav file of the correct length (one is included in tests/) under POST "/predict". It may take some time to complete the first request, but the consequtive requests have lower latency. (This issue is described in an github issue). The root directory is just showing a health scheck.
 
 ### Question 23
 
