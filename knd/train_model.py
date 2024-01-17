@@ -1,4 +1,3 @@
-# train with pytorch-lightning
 from pytorch_lightning import Trainer
 from knd.models.model import DummyNet
 from knd.data.dataloader import get_dataloaders
@@ -22,6 +21,7 @@ else:
 
 @hydra.main(config_path="../configs", config_name="default_config")
 def train(cfg: DictConfig):
+    """Train the model."""
     # instantiate the model
     model = DummyNet(lr=cfg.experiment.lr, n_hidden=cfg.experiment.n_hidden, dropout=cfg.experiment.dropout)
 
