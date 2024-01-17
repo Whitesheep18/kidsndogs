@@ -1,27 +1,27 @@
-# train with pytorch-lightning
 from pytorch_lightning import Trainer
 from knd.models.model import DummyNet
 from knd.data.dataloader import get_dataloaders
 from pytorch_lightning.loggers import WandbLogger
 import hydra
 from omegaconf import DictConfig
+import wandb
+import os
+os.environ['HYDRA_FULL_ERROR'] = '1'
 
-try:
-    import wandb
-    with_logging = True
-except ImportError:
-    with_logging = False
-
-
-if not with_logging or wandb.api.api_key is None:
-    # likely docker container
+if wandb.api.api_key is None:
+    # likely docker container, to enable login run:
+    #docker run --env WANDB_API_KEY=<api_key> ...
     logger = None
-else:   
-    # likely local machine
-    logger = WandbLogger(log_model="all", project="kidsndogs", entity="team-perfect-pitch")
+
+else:
+    # likely local machine with wandb logged in
+    tags = ['api_key_as_env_var'] if os.environ.get('WANDB_API_KEY') is not None else None    
+    logger = WandbLogger(log_model="all", project="kidsndogs", entity="team-perfect-pitch", tags=tags)
+
 
 @hydra.main(config_path="../configs", config_name="default_config")
 def train(cfg: DictConfig):
+    """Train the model."""
     # instantiate the model
     model = DummyNet(lr=cfg.experiment.lr, n_hidden=cfg.experiment.n_hidden, dropout=cfg.experiment.dropout)
 
@@ -34,4 +34,5 @@ def train(cfg: DictConfig):
 
 
 if __name__ == "__main__":
+    print('hey')
     train()

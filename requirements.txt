@@ -6,4 +6,5 @@ matplotlib
 scikit-learn
 wandb
 hydra-core
-snakeviz
+google-cloud-storage==1.43.0
+
