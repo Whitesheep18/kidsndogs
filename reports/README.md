@@ -129,7 +129,8 @@ s164590, s220034, s232437, s220817
 >
 > Answer:
 
-In the modeling part, we used torchaudio for handling sound samples and torchvision for modeling based on spectrograms. Furthermore, we used torchmetrics for evaluating our model. For version control we use git and dvc (for data) and host our repo on Github. We containerized the project using docker and placed the final image on Docker Hub. For logging we used wandb and set up experiments using Hydra. To ensure code quality we used ruff for linting, pytest for unit tests and Github Actions to continuously integrate changes.
+In the modeling phase, we employed torchaudio to effectively manage sound samples, while leveraging torchvision for modeling, specifically focusing on spectrograms. Our model evaluation process was implemented with the incorporation of torchmetrics. Version control was handled through git and dvc, the latter dedicated to managing data, with our repository residing on GitHub. The project was containerized using Docker, and the final image was shared on Docker Hub. To keep tabs on our project's performance, we implemented logging through wandb and configured experiments using Hydra. Maintaining code integrity was a priority, achieved through the use of  pytest for unit tests, and seamless integration of changes via GitHub Actions which came with the upload of profiling outputs.
+
 
 ## Coding environment
 
@@ -148,7 +149,7 @@ In the modeling part, we used torchaudio for handling sound samples and torchvis
 >
 > Answer:
 
-We used conda for managing our dependencies. We continuously built up the requirements.txt file, which we used to create a conda environment called knd. To get a complete copy of our development environment a new team memeber would have to 
+We used conda for managing our dependencies. We continuously built up the requirements.txt file, which we used to create a conda environment called knd. To get a complete copy of our development environment a new team member would have to 
 1. Start a linux terminal with anaconda/miniconda installed
 2. Clone this repository with git clone git@github.com:Whitesheep18/kidsndogs.git
 3. run `make create_enviroment` to create a conda environment called knd
@@ -472,7 +473,7 @@ workerPoolSpecs:
     containerSpec:
         imageUri: gcr.io/kidsndogs/train_model
 
-        s
+        
 
 ### Question 19
 
