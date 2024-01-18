@@ -129,7 +129,8 @@ s164590, s220034, s232437, s220817
 >
 > Answer:
 
-In the modeling part, we used torchaudio for handling sound samples and torchvision for modeling based on spectrograms. Furthermore, we used torchmetrics for evaluating our model. For version control we use git and dvc (for data) and host our repo on Github. We containerized the project using docker and placed the final image on Docker Hub. For logging we used wandb and set up experiments using Hydra. To ensure code quality we used ruff for linting, pytest for unit tests and Github Actions to continuously integrate changes.
+In the modeling phase, we employed torchaudio to effectively manage sound samples, while leveraging torchvision for modeling, specifically focusing on spectrograms. Our model evaluation process was implemented with the incorporation of torchmetrics. Version control was handled through git and dvc, the latter dedicated to managing data, with our repository residing on GitHub. The project was containerized using Docker, and the final image was shared on Docker Hub. To keep tabs on our project's performance, we implemented logging through wandb and configured experiments using Hydra. Maintaining code integrity was a priority, achieved through the use of  pytest for unit tests, and seamless integration of changes via GitHub Actions which came with the upload of profiling outputs.
+
 
 ## Coding environment
 
@@ -148,7 +149,7 @@ In the modeling part, we used torchaudio for handling sound samples and torchvis
 >
 > Answer:
 
-We used conda for managing our dependencies. We continuously built up the requirements.txt file, which we used to create a conda environment called knd. To get a complete copy of our development environment a new team memeber would have to 
+We used conda for managing our dependencies. We continuously built up the requirements.txt file, which we used to create a conda environment called knd. To get a complete copy of our development environment a new team member would have to 
 1. Start a linux terminal with anaconda/miniconda installed
 2. Clone this repository with git clone git@github.com:Whitesheep18/kidsndogs.git
 3. run `make create_enviroment` to create a conda environment called knd
@@ -278,7 +279,7 @@ Moreover, we adopted a feature-branch workflow, creating separate branches for e
 >
 > Answer:
 
-We used DVC in our project initially using Google Drive and later with a GCP bucket. Data version control makes it easier to collaborate on the same dataset and tracking changes. It is useful to known which changes/updates have been made to the data and being able to perform a rollback, if necessary. In our project, the dataset was only updated once to include more data. In a bigger project running in the long-term, data versioning would be more beneficial. 
+We used DVC in our project initially using Google Drive and later with a GCP bucket. Data version control makes it easier to collaborate on the same dataset and tracking changes. It is useful to known which changes/updates have been made to the data and being able to perform a rollback, if necessary. In our project, the dataset was static but updated once to include more data. In a bigger project running in the long-term, data versioning would be more beneficial. By incorporating DVC into our GitHub Actions workflow, we enhanced the reproducibility and consistency of our tests. The specific dataset version associated with each workflow run was automatically retrieved, guaranteeing that tests were conducted.
 
 ### Question 11
 
@@ -595,7 +596,8 @@ https://files.slack.com/files-pri/T02RX35FQFQ-F06F56L4DL0/download/monitoring.ht
 >
 > Answer:
 
---- question 25 fill here ---
+In the diagram we have separated the local from the remote setup. On the left side of the black dashed line, the local setup includes the local data storage and github repository. On the right side of the line, we have the setup up in the cloud which includes all the services used in GCP as well as the Fast API application that creates an interface between the ML model and the end user. Whenever changes are made to files in the repository and pushed to the main branch, continuous integration is ensured by a trigger in GCP that rebuilds images for training and prediction. Once the training image is built, it is used to create a training job in Vertex AI and simultaneously logged in Weights and Biases. The prediction API is containerized using another Docker container which is deployed in Cloud Run. Through the deployment, an API can viewed in the browser using FastAPI. In this way, end users can interact with the model and perform prediction, which in our case includes uploading an audio file as input and getting the predicted emotion as output. Additionally, DVC is used for data versioning and a GCP bucket is used for storing data in the cloud. The dockerfiles in the repo pulls the data from the cloud to make it available for training.
+![my_image](figures/diagram.png)
 
 ### Question 26
 
@@ -626,4 +628,8 @@ Some of the biggest challenges in the project included making the different tool
 >
 > Answer:
 
---- question 27 fill here ---
+Overall, we cooperated on most of the tasks in this project.
+S164590: in charge of processing data and setting up CI in GCP.
+s220817: was responsible for metrics logging and deploying the API.
+s232437: was in charge of implementing testing, profiling and CI in GitHub.
+s220034: made docker containers and training in the cloud.
