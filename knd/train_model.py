@@ -27,6 +27,8 @@ logger = WandbLogger(log_model="all", project="kidsndogs", entity="team-perfect-
 @hydra.main(config_path="../configs", config_name="default_config", version_base="1.1")
 def train(cfg: DictConfig):
     """Train the model."""
+    print("here I am", os.getcwd())
+    print("this is what I see", os.listdir('.'))
     # instantiate the model
     model = DummyNet(lr=cfg.experiment.lr, n_hidden=cfg.experiment.n_hidden, dropout=cfg.experiment.dropout)
 
