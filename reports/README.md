@@ -443,7 +443,7 @@ In terms of code optimization and performance, we recognized the importance of p
 >
 > Answer:
 
---- question 20 fill here ---
+![my_image](figures/images.png)
 
 ### Question 21
 
@@ -452,7 +452,7 @@ In terms of code optimization and performance, we recognized the importance of p
 >
 > Answer:
 
---- question 21 fill here ---
+![my_image](figures/build_history.png)
 
 ### Question 22
 
