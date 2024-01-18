@@ -41,7 +41,7 @@ jobs:
           pytest -v
 
     - name: Install Profiling Package
-      run: pip install cProfilev
+      run: pip install cProfileV
       # This step installs the cProfilev package which is a Python profiler.
 
     - name: Run Profiler
