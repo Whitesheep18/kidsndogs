@@ -42,6 +42,10 @@ jobs:
     - name: Get data
       run: dvc pull
 
+    - name: Install knd
+      run: |
+        pip install -e .
+
     - name: Download Best Model
       run: |
         python ./knd/models/download_public.py
