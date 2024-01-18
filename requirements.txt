@@ -10,3 +10,4 @@ torch_tb_profiler
 google-cloud-storage==1.43.0
 google-cloud-secret-manager==2.0.0
 dvc
+dvc-gs
