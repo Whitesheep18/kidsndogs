@@ -1,5 +1,5 @@
 # Base image
-FROM python:3.10-slim
+FROM --platform=linux/amd64 python:3.10-slim
 
 RUN apt update && \
     apt install --no-install-recommends -y build-essential gcc && \
@@ -9,6 +9,7 @@ COPY requirements.txt requirements.txt
 COPY pyproject.toml pyproject.toml
 COPY knd/ knd/
 COPY data/ data/
+COPY configs/ configs/
 
 WORKDIR /
 RUN pip install -r requirements.txt --no-cache-dir
