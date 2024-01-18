@@ -33,7 +33,6 @@ def get_dataloaders(batch_size=64, dataset_path="data"):
     batch_size : int
         The batch size to use for the dataloaders.
     """
-    print('LISTDIR', os.listdir(), os.listdir('../../../'))
     train_dataset = SpeechDataset(train=True, dataset_path=dataset_path)
     test_dataset = SpeechDataset(train=False, dataset_path=dataset_path)
     
