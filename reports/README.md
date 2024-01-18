@@ -436,7 +436,13 @@ In terms of code optimization and performance, we recognized the importance of p
 >
 > Answer:
 
---- question 17 fill here ---
+* Cloud Build: Building Docker images
+* Cloud Storage: for storing and versioning data in a GCP bucket.
+* Triggers: To automatically build images when changes are made to main. 
+* Container Registry: Images are stored in containers.
+* Cloud Engine: To create and run virtual machines.
+* Cloud Run: deploys the model in GCP. 
+* Vertex AI: automatically create a VM for us, launch our experiments and then close the VM afterwards.
 
 ### Question 18
 
