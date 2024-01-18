@@ -294,7 +294,46 @@ We used DVC in our project initially using Google Drive and later with a GCP buc
 >
 > Answer:
 
---- question 11 fill here ---
+Our GitHub Actions workflow, **"Run Tests"** is integral to our Continuous Integration (CI) system, focusing on code robustness and compatibility. It activates for pushes or pull requests to main or master branches, reinforcing our commitment to high-quality code.
+
+The workflow rigorously tests our code across various environments, ensuring consistent performance on both Ubuntu and Windows, and caters to the diverse Python ecosystem by supporting versions 3.10 and 3.11. Initialization involves setting up the required Python environment and installing dependencies listed in `requirements.txt`. A crucial enhancement to our CI process is the implementation of dependency caching, significantly optimizing build times:
+
+```yaml
+- name: Cache Python dependencies
+  uses: actions/cache@v2
+  with:
+    path: ~/.cache/pip
+    key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}-${{ matrix.python-version }}
+  restore-keys: |
+    ${{ runner.os }}-pip-${{ matrix.python-version }}
+```
+
+This mechanism effectively reduces redundant downloads, utilizing cache keys generated based on the OS, Python version, and dependencies to ensure the cache's relevance and freshness.
+Central to our workflow is performance profiling, a step that meticulously monitors and records the runtime characteristics of our code. By uploading these profiling results as workflow artifacts, we gain valuable, actionable insights into performance bottlenecks, allowing for targeted optimizations:
+```yaml
+- name: Run Profiler
+  run: python ./knd/predict_model.py ./tests/03-01-08-01-02-02-03.wav ./models/best_model.ckpt
+- name: Upload profiling output
+  uses: actions/upload-artifact@v2
+  with:
+    name: profiling-output
+    path: ./log/profile_output.json
+```
+
+Each test run not only verifies code correctness but also contributes to a growing database of performance metrics, guiding our continuous effort to refine and optimize.
+
+The workflow includes a specific section dedicated to data retrieval, crucial for tests that depend on datasets or specific data structures. This is accomplished using Data Version Control (DVC), an advanced version control system designed specifically for data science projects. The segment of the workflow:
+```yaml
+- name: Get data
+  run: dvc pull
+  env:
+    GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
+```
+
+DVC works in conjunction with our existing Git-based workflow, ensuring that the data our tests rely on is the correct version, in sync with the code being tested.
+
+Moreover, we prioritize security and confidentiality, especially when handling sensitive data. The GDRIVE_CREDENTIALS_DATA environment variable, stored securely as a GitHub secret, allows us to securely access our data stored on Google Drive, without exposing sensitive credentials.
+
 
 ## Running code and tracking experiments
 
@@ -355,7 +394,7 @@ We made use of config files as it is described above. Whenever an experiment run
 >
 > Answer:
 
-Find the [train accuracy](figures/train_acc.png) and the [validation accuracy](figures/val_acc.png) in figures/. The run gallant-resonance-16 corresponds to exp1 while confused-river-17 corresponds to exp2.
+For both train and validation sets we have logged metrics. We logged loss, accuracy and macro F1 score both for the individual batches and after an epoch. Moreover after each epoch we also saved a confusion matrix. Find the train accuracy and the validation accuracy in figures/. The run "gallant-resonance-16" corresponds to experiment 1 (exp1 in configs/) while "confused-river-17" corresponds to experiment 2 (exp 2 in configs/). Accuracy is a good way of getting an idea of the overall performance of the model. Similarly, the macro F1 score also gives a good overview, but it is a measure that is adjusted for class-specific performance. We have decided to go with macro averaging, as our classes are balanced. Confusion matrix gives a more fine-grained insight into what classes is the model good (or bad) at predicting. Find a screenshot of two of our runs "dandy-durian-45" and "rich-armadillo-43" in figures/confmats.png. The runs use the same hyperparameters (exp1), but one is at an earlier epoch. This gives us an understanding of what order the classes are learnt. (One can also adjust epoch number with the "step" slider to understand the individual run's behavior.) Furthermore, in eg. "rich-armadillo-43", the corresponding accuracy was rather low, and the F1 score was even lower, as the model has a tendency of predicting 2 classes ("calm" and "angry").
 
 ### Question 15
 
@@ -370,7 +409,12 @@ Find the [train accuracy](figures/train_acc.png) and the [validation accuracy](f
 >
 > Answer:
 
---- question 15 fill here ---
+Our project used Docker to encapsulate prediction models, prediction API, and model training processes. This strategy enables seamless execution locally and on the Google Cloud platform, offering flexibility and scalability. Our workflow includes automated builds triggered by GitHub updates, while manual building and registry push options cater to users' and our convenience.
+For instance, developers can locally build Docker images using the following commands: docker build -f dockerfiles/train_model.dockerfile . -t <container_name>:latest and vice versa to the other two. Here is the docker files’ [configuration](https://github.com/Whitesheep18/kidsndogs/tree/docker/dockerfiles)
+Cloud Deployment
+Automated builds and deployments on Google Cloud are facilitated by GitHub integration. Updates to the repository trigger the automatic creation of Docker images and subsequent deployment of updated containers on Google Cloud.
+Manual Build and Registry Push
+For people who want to have manual control over the deployment process or testing, an option involves building Docker images locally and pushing them to the Container Registry. This flexibility caters to a diverse base with convenience for deployment and integration.
 
 ### Question 16
 
@@ -385,8 +429,8 @@ Find the [train accuracy](figures/train_acc.png) and the [validation accuracy](f
 >
 > Answer:
 
-For debugging during our experiments, we adopted a hybrid approach. Locally, we primarily utilized the built-in debugger in Visual Studio Code, which offers an intuitive and informative environment for identifying and resolving issues. In scenarios where the built-in debugger was not sufficient, we used traditional print statement debugging. This method, though simple, proved effective in tracing and understanding the flow of data and the state of variables at various execution points. We also looked at logs while moving the training process to the cloud.
-In terms of code optimization and performance, we recognized the importance of profiling. We conducted a comprehensive profiling of our main code using PyTorch's built-in tools. The profiling data revealed that certain functions, notably load_model, were significant time consumers. Therefore, we implemented changes to optimize this function and avoid bottlenecks. The revised load_model function now incorporates a more efficient state loading strategy. In the updated implementation, we streamlined the process of loading the model's state dictionary from the checkpoint. By refining how we access and load the checkpoint data, we minimized I/O operations and reduced the overall loading time. 
+For debugging during our experiments, we adopted a hybrid approach. Locally, we mostly utilized the built-in debugger in Visual Studio Code, which offers an intuitive environment for identifying and resolving issues with tools like "add checkpoint". In scenarios where the built-in debugger was not sufficient, we used traditional print statement debugging. This method, though simple, proved effective in tracing and understanding the flow of data and the state of variables at various execution points. We also looked at logs while moving the training process to the cloud from local.
+In terms of code optimization and performance, we recognized the importance of profiling. We conducted a comprehensive profiling of our main code using PyTorch's built-in tools for the prediction of the emotion starting from the .wav audio file. The profiling data revealed that certain functions called while executing the prediction, notably load_model, were significant time consumers. Therefore, we implemented changes to optimize this function and avoid bottlenecks. The revised load_model function now incorporates a more efficient state loading strategy. In the updated implementation, we streamlined the process of loading the model's state dictionary from the checkpoint. By refining how we access and load the checkpoint data, we minimized I/O operations and reduced the overall loading time. 
 
 
 ## Working in the cloud
@@ -425,7 +469,22 @@ In terms of code optimization and performance, we recognized the importance of p
 >
 > Answer:
 
---- question 18 fill here ---
+In our project, we have harnessed the computational power of Google Compute Engine to run three distinct containers dedicated to model training, predictions, and the prediction API. The instances deployed are of the following specifications:
+Machine Type: n1-standard-1
+Architecture: x86/64
+GPUs: None
+Moreover, we have leveraged Google Vertex AI for the streamlined training of our models. By incorporating a specific script into our project, as exemplified by the configuration file https://github.com/Whitesheep18/kidsndogs/blob/docker/config_VertexAI.yaml, we have simplified the training process. This approach allows us to execute straightforward commands in Vertex AI, enhancing convenience and enabling multitasking for training of various models using a single command in the future. The Vertex AI instances utilized possess the following specifications:
+Machine Type: n1-standard-2
+Machine Count: 1
+Container Location: gcr.io/kidsndogs/train_model
+config_VertexAI.yaml
+# config_cpu.yaml
+workerPoolSpecs:
+    machineSpec:
+        machineType: n1-highmem-2
+    replicaCount: 1
+    containerSpec:
+        imageUri: gcr.io/kidsndogs/train_model
 
 ### Question 19
 
@@ -483,7 +542,11 @@ We have deployed our predict api in the cloud using Cloud Run. The image of the 
 >
 > Answer:
 
---- question 23 fill here ---
+We have managed to implement monitoring of model drift using Evidently in the predict Api. A user can upload audio files, and statistics about these files (currently only the mean of the corresponding spectogram) get saved into an intermediate database (a .csv). The data about the submitted files get compared to the same statistics about our training set. This comparison can be invoked by using the GET method in monitoring. Evidently creates a monitoring.html file, which visualizes the comparisons. There are a number of problems with our current script though: firstly, instead of the mean, we should track meaningful features of our audio files (such as summary metrics of spectograms). Secondly, the evidently visualization cannot seem to handle a high enough precision to meaningfully visualize our metrics. An example monitoring.html is included in figures/. A successful monitoring pipeline would allow us to detect in time if the data we are supposed to train on changes over time, so we can change and retrain our model (such as sound samples recorded with a better quality device, in case our model has learnt to pick up on something device-related).
+![my_image](figures/confmat.png)
+![my_image](figures/confmats.png)
+https://files.slack.com/files-pri/T02RX35FQFQ-F06F56L4DL0/download/monitoring.html?origin_team=T02RX35FQFQ
+
 
 ### Question 24
 
@@ -532,7 +595,7 @@ We have deployed our predict api in the cloud using Cloud Run. The image of the 
 >
 > Answer:
 
---- question 26 fill here ---
+Some of the biggest challenges in the project included making the different tools work together. For example, getting model training to work in Vertex AI proved to be a challenge. We managed to perform training locally but moving it to the cloud required building an image in Cloud build, fetch it from Container Registry, getting data from Cloud Storage and perform training in Vertex AI. We especially struggled with pulling the data from the cloud into our docker container.
 
 ### Question 27
 
