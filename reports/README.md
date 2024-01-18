@@ -318,8 +318,7 @@ The workflow includes a specific section dedicated to data retrieval, crucial fo
   env:
     GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
 ```
-
-DVC works in conjunction with our existing Git-based workflow, ensuring that the data our tests rely on is the correct version, in sync with the code being tested. Moreover, we prioritize security and confidentiality, especially when handling sensitive data. The GDRIVE_CREDENTIALS_DATA environment variable, stored securely as a GitHub secret, allows us to securely access our data stored on Google Drive, without exposing sensitive credentials.
+DVC works in conjunction with our existing Git-based workflow, ensuring that the data our tests rely on is the correct version, in sync with the code being tested. Moreover, we prioritize security and confidentiality: the GDRIVE_CREDENTIALS_DATA environment variable, stored securely as a GitHub secret, allows us to securely access our data stored on Google Drive, without exposing sensitive credentials.
 
 
 ## Running code and tracking experiments
