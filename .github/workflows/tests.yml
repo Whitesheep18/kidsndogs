@@ -45,9 +45,11 @@ jobs:
         pytest -v
 
     - name: Run Profiler
-      run: python ./knd/predict_model.py ./tests/03-01-08-01-02-02-03.wav ./models/best_model.ckpt
+      run: 
+        export PYTHONPATH=$PYTHONPATH:${{ github.workspace }}
+        python ./knd/predict_model.py ./tests/03-01-08-01-02-02-03.wav ./models/best_model.ckpt
       # This step runs the profiler on the script and outputs the result to profile_output.
-    
+
     - name: Upload profiling output
       uses: actions/upload-artifact@v2
       with:
