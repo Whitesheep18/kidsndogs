@@ -460,13 +460,17 @@ In terms of code optimization and performance, we recognized the importance of p
 In our project, we have harnessed the computational power of Google Compute Engine to run three distinct containers dedicated to model training, predictions, and the prediction API. The instances deployed are of the following specifications:
 
 ***Machine Type:** n1-standard-1
+
 **Architecture:** x86/64
+
 **GPUs:** None
 
 Moreover, we have leveraged Google Vertex AI for the streamlined training of our models. By incorporating a specific script into our project, as exemplified by the configuration file <https://github.com/Whitesheep18/kidsndogs/blob/docker/config_VertexAI.yaml>, we have simplified the training process. This approach allows us to execute straightforward commands in Vertex AI, enhancing convenience and enabling multitasking for training of various models using a single command in the future. The Vertex AI instances utilized possess the following specifications:
 
 **Machine Type:** n1-standard-2
+
 **Machine Count:** 1
+
 **Container Location:** gcr.io/kidsndogs/train_model
 
 ### Question 19
