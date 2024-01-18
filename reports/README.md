@@ -296,7 +296,7 @@ We used DVC in our project initially using Google Drive and later with a GCP buc
 
 Our GitHub Actions workflow, **"Run Tests"** is integral to our Continuous Integration (CI) system, focusing on code robustness and compatibility. It activates for pushes or pull requests to main or master branches, reinforcing our commitment to high-quality code.
 
-The workflow rigorously tests our code across various environments, ensuring consistent performance on both Ubuntu and Windows, and caters to the diverse Python ecosystem by supporting versions 3.10 and 3.11. Initialization involves setting up the required Python environment and installing dependencies listed in `requirements.txt`. A crucial enhancement to our CI process is the implementation of dependency caching, significantly optimizing build times:
+The workflow rigorously tests our code across various environments, ensuring consistent performance on both Ubuntu and Windows, trying different Python versions by supporting testing 3.10 and 3.11. Initialization involves setting up the required environment and installing dependencies listed in `requirements.txt`. A crucial enhancement to our CI process is the implementation of dependency caching, significantly optimizing build times:
 
 ```yaml
 - name: Cache Python dependencies
@@ -309,18 +309,7 @@ The workflow rigorously tests our code across various environments, ensuring con
 ```
 
 This mechanism effectively reduces redundant downloads, utilizing cache keys generated based on the OS, Python version, and dependencies to ensure the cache's relevance and freshness.
-Central to our workflow is performance profiling, a step that meticulously monitors and records the runtime characteristics of our code. By uploading these profiling results as workflow artifacts, we gain valuable, actionable insights into performance bottlenecks, allowing for targeted optimizations:
-```yaml
-- name: Run Profiler
-  run: python ./knd/predict_model.py ./tests/03-01-08-01-02-02-03.wav ./models/best_model.ckpt
-- name: Upload profiling output
-  uses: actions/upload-artifact@v2
-  with:
-    name: profiling-output
-    path: ./log/profile_output.json
-```
-
-Each test run not only verifies code correctness but also contributes to a growing database of performance metrics, guiding our continuous effort to refine and optimize.
+Central to our workflow is performance profiling, to monitor and record the runtime characteristics of our code. By uploading these profiling results as workflow artifacts, we gain valuable insights into performance bottlenecks, allowing for targeted optimizations.
 
 The workflow includes a specific section dedicated to data retrieval, crucial for tests that depend on datasets or specific data structures. This is accomplished using Data Version Control (DVC), an advanced version control system designed specifically for data science projects. The segment of the workflow:
 ```yaml
@@ -330,9 +319,7 @@ The workflow includes a specific section dedicated to data retrieval, crucial fo
     GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
 ```
 
-DVC works in conjunction with our existing Git-based workflow, ensuring that the data our tests rely on is the correct version, in sync with the code being tested.
-
-Moreover, we prioritize security and confidentiality, especially when handling sensitive data. The GDRIVE_CREDENTIALS_DATA environment variable, stored securely as a GitHub secret, allows us to securely access our data stored on Google Drive, without exposing sensitive credentials.
+DVC works in conjunction with our existing Git-based workflow, ensuring that the data our tests rely on is the correct version, in sync with the code being tested. Moreover, we prioritize security and confidentiality, especially when handling sensitive data. The GDRIVE_CREDENTIALS_DATA environment variable, stored securely as a GitHub secret, allows us to securely access our data stored on Google Drive, without exposing sensitive credentials.
 
 
 ## Running code and tracking experiments
