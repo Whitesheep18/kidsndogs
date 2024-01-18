@@ -19,14 +19,14 @@ else:
     logger = WandbLogger(log_model="all", project="kidsndogs", entity="team-perfect-pitch", tags=tags)
 
 
-@hydra.main(config_path="../configs", config_name="default_config")
+@hydra.main(config_path="../configs", config_name="default_config", version_base="1.1")
 def train(cfg: DictConfig):
     """Train the model."""
     # instantiate the model
     model = DummyNet(lr=cfg.experiment.lr, n_hidden=cfg.experiment.n_hidden, dropout=cfg.experiment.dropout)
 
     # get dataloaders
-    train_dataloader, test_dataloader = get_dataloaders(batch_size=8, dataset_path=cfg.experiment.dataset_path)
+    train_dataloader, test_dataloader = get_dataloaders(batch_size=cfg.experiment.batch_size, dataset_path=cfg.experiment.dataset_path)
 
     # train the model
     trainer = Trainer(max_epochs=cfg.experiment.n_epochs, logger=logger, log_every_n_steps=20)
