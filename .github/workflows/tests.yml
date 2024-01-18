@@ -36,7 +36,7 @@ jobs:
 
     - name: Download Best Model
       run: |
-        python download_public.py
+        python ./knd/models/download_public.py
       # This step downloads the best model from the specified URL into the knd/models directory.
 
     - name: Test with pytest
