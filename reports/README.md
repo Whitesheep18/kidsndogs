@@ -395,12 +395,39 @@ For both train and validation sets we have logged metrics. We logged loss, accur
 >
 > Answer:
 
-Our project used Docker to encapsulate prediction models, prediction API, and model training processes. This strategy enables seamless execution locally and on the Google Cloud platform, offering flexibility and scalability. Our workflow includes automated builds triggered by GitHub updates, while manual building and registry push options cater to users' and our convenience.
-For instance, developers can locally build Docker images using the following commands: docker build -f dockerfiles/train_model.dockerfile . -t <container_name>:latest and vice versa to the other two. Here is the docker files’ [configuration](https://github.com/Whitesheep18/kidsndogs/tree/docker/dockerfiles)
-Cloud Deployment
+In our project, we have implemented a robust containerization and deployment strategy using Docker to encapsulate prediction models, prediction API, and model training processes. This strategy enables seamless execution both locally and on the Google Cloud platform, offering flexibility and scalability. Our workflow includes automated builds triggered by GitHub updates, while manual building and registry push options cater to users' and our convenience. 
+
+*Overview of Dockerfiles*
+
+Our project employs Dockerfiles to define the configuration and dependencies for the following key components:
+
+1. **Prediction Models:** The `prediction_model.dockerfile` encapsulates the environment necessary for deploying our prediction model.
+
+2. **API Service:** The `api_service.dockerfile` specifies the configuration for deploying our prediction API.
+
+3. **Model Training:** The `train_model.dockerfile` provides the environment for the training model, supporting both local and cloud execution.
+
+*For instance*
+Developers can locally build Docker images using the following commands:
+```docker build -f dockerfiles/train_model.dockerfile . -t <container_name>:latest```
+and vice versa to the other two. Link to docker file: <https://github.com/Whitesheep18/kidsndogs/tree/docker/dockerfiles>
+
+*Cloud Deployment*
+
 Automated builds and deployments on Google Cloud are facilitated by GitHub integration. Updates to the repository trigger the automatic creation of Docker images and subsequent deployment of updated containers on Google Cloud.
-Manual Build and Registry Push
-For people who want to have manual control over the deployment process or testing, an option involves building Docker images locally and pushing them to the Container Registry. This flexibility caters to a diverse base with convenience for deployment and integration.
+
+**GitHub Integration**
+
+Our GitHub repository serves as a central hub for version control and automation. Key integration points include:
+
+1. **Image Build Trigger:** Commits to ```main``` branches automatically initiate Docker image builds for each project component.
+
+2. **Container Deployment Trigger:** Following successful image builds, the updated containers are automatically deployed on Google Cloud, ensuring a streamlined and efficient process.
+
+**Manual Build and Registry Push**
+
+For our and people who would like to manual control over the deployment process or testing, an option involves building Docker images locally and pushing them to the Container Registry. This flexibility caters to a diverse base with convenience for the deployment method and intergration.
+
 
 ### Question 16
 
@@ -455,12 +482,13 @@ In terms of code optimization and performance, we recognized the importance of p
 >
 > Answer:
 
-In our project, we have harnessed the computational power of Google Compute Engine to run three distinct containers dedicated to model training, predictions, and the prediction API. The instances deployed are of the following specifications:
+In our project, we have utillized the computational power of Google Compute Engine to run three distinct containers dedicated to model training, predictions, and the prediction API. The instances deployed are of the following specifications:
+
 Machine Type: n1-standard-1
 Architecture: x86/64
 GPUs: None
 Moreover, we have leveraged Google Vertex AI for the streamlined training of our models. By incorporating a specific script into our project, as exemplified by the configuration file https://github.com/Whitesheep18/kidsndogs/blob/docker/config_VertexAI.yaml, we have simplified the training process. This approach allows us to execute straightforward commands in Vertex AI, enhancing convenience and enabling multitasking for training of various models using a single command in the future. The Vertex AI instances utilized possess the following specifications:
-Machine Type: n1-standard-2
+Machine Type: n1-highcpu-32
 Machine Count: 1
 Container Location: gcr.io/kidsndogs/train_model
 config_VertexAI.yaml
@@ -471,8 +499,6 @@ workerPoolSpecs:
     replicaCount: 1
     containerSpec:
         imageUri: gcr.io/kidsndogs/train_model
-
-        s
 
 ### Question 19
 
