@@ -13,3 +13,5 @@ steps:
       args: ['build', '-f', 'dockerfiles/predict_api.dockerfile', '-t', 'gcr.io/kidsndogs/predict_api', '.']
     - name: 'gcr.io/cloud-builders/docker'
       args: ['push', 'gcr.io/kidsndogs/predict_api']
+options:
+  machineType: 'E2_HIGHCPU_8'
