@@ -486,6 +486,8 @@ workerPoolSpecs:
     containerSpec:
         imageUri: gcr.io/kidsndogs/train_model
 
+        s
+
 ### Question 19
 
 > **Insert 1-2 images of your GCP bucket, such that we can see what data you have stored in it.**
