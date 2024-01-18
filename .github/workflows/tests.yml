@@ -19,7 +19,7 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: 3.11
-      # This step sets up a Python 3.11 environment.
+      # This step sets up a Python 3.11 environment with -e .
 
     - name: Cache Python dependencies
       uses: actions/cache@v2
