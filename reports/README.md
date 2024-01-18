@@ -171,7 +171,7 @@ One can also build the image with docker build -f dockerfiles/train_model.docker
 > *experiments.*
 > Answer:
 
-From the coockiecutter template we filled out most folders except from the notebooks folder, which was removed since jupyter notebooks were not used for this project. We added a dockerfiles folder that includes the dockerfiles needed to build images for training and inference of the model. We did not use the src/visualizations folder since wandb was used for visualizing results. 
+We initiated the project using the cookiecutter structure as a foundation. We filled different files such as 'make_dataset.py' file in the src/data/ folder and the 'model.py', 'predict_model.py' and 'train_model.py' files in the src/models folder have been completed, contributing to the overall project setup. Additional folders such as '.github', '.dvc', 'conf' and 'wandb' have been incorporated. '.github' handles unittesting and workflows, '.dvc' outlines the configuration for dvc and data push/pull operations, while 'conf' manages the configuration files essential for project execution. Dockerfiles and YAML files have been created, facilitating Vertex AI runs with a main.py inference file located in the root directory. We did not fill out the notebooks folder, which was removed since jupyter notebooks were not used for this project. We added a dockerfiles folder that includes the dockerfiles needed to build images for training and inference of the model. We did not use the src/visualizations folder since wandb was used for visualizing results. 
 
 ### Question 6
 
