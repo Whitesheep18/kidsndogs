@@ -8,15 +8,20 @@ import wandb
 import os
 os.environ['HYDRA_FULL_ERROR'] = '1'
 
-if wandb.api.api_key is None:
-    # likely docker container, to enable login run:
-    #docker run --env WANDB_API_KEY=<api_key> ...
-    logger = None
 
-else:
-    # likely local machine with wandb logged in
-    tags = ['api_key_as_env_var'] if os.environ.get('WANDB_API_KEY') is not None else None    
-    logger = WandbLogger(log_model="all", project="kidsndogs", entity="team-perfect-pitch", tags=tags)
+
+
+if wandb.api.api_key is None:
+    print('hey')
+    from google.cloud import secretmanager
+    secret_client = secretmanager.SecretManagerServiceClient()
+    secret_name = f'projects/kidsndogs/secrets/WANDB_API_KEY/versions/1'
+    response = secret_client.access_secret_version(request={"name": secret_name})
+    key = response.payload.data.decode("UTF-8")
+    os.environ['WANDB_API_KEY'] = key
+
+tags = ['api_key_as_env_var'] if os.environ.get('WANDB_API_KEY') is not None else None    
+logger = WandbLogger(log_model="all", project="kidsndogs", entity="team-perfect-pitch", tags=tags)
 
 
 @hydra.main(config_path="../configs", config_name="default_config", version_base="1.1")
