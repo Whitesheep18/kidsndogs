@@ -12,13 +12,13 @@ os.environ['HYDRA_FULL_ERROR'] = '1'
 
 
 if wandb.api.api_key is None:
-    print('hey')
-    from google.cloud import secretmanager
-    secret_client = secretmanager.SecretManagerServiceClient()
-    secret_name = f'projects/kidsndogs/secrets/WANDB_API_KEY/versions/1'
-    response = secret_client.access_secret_version(request={"name": secret_name})
-    key = response.payload.data.decode("UTF-8")
-    os.environ['WANDB_API_KEY'] = key
+    os.environ['WANDB_API_KEY'] = "a35bc61a1c2fff2541997381a7f659f9bde16bf3"
+    #from google.cloud import secretmanager
+    #secret_client = secretmanager.SecretManagerServiceClient()
+    #secret_name = f'projects/kidsndogs/secrets/WANDB_API_KEY/versions/1'
+    #response = secret_client.access_secret_version(request={"name": secret_name})
+    #key = response.payload.data.decode("UTF-8")
+    #os.environ['WANDB_API_KEY'] = key
 
 tags = ['api_key_as_env_var'] if os.environ.get('WANDB_API_KEY') is not None else None    
 logger = WandbLogger(log_model="all", project="kidsndogs", entity="team-perfect-pitch", tags=tags)
