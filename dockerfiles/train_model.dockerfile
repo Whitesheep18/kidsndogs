@@ -24,4 +24,4 @@ RUN pip install -e . --no-deps --no-cache-dir
 
 
 #ENTRYPOINT ["python", "-u", "knd/train_model.py"]
-CMD pull_and_train.sh
+CMD dvc pull && python -u knd/train_model.py
