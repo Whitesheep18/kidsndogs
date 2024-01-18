@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import torch
 from knd.models.model import DummyNet
 import torchaudio
@@ -11,6 +12,7 @@ from torch.autograd.profiler import record_function
 from torch.profiler import profile, ProfilerActivity
 from torch.profiler import profile, tensorboard_trace_handler
 import time
+import sys
 
 def preprocess(mel_spectogram):    
     """
@@ -151,12 +153,15 @@ def load_model(checkpoint_path):
 
 if __name__ == "__main__":
     # Ask the user for the path to the .wav file
-    audio_path = input("Enter the path to the .wav file: ")
+    # audio_path = input("Enter the path to the .wav file: ")
+    audio_path = sys.argv[1]
     
     # Ask the user for the path to the PyTorch model file
-    model_path = input("Enter the path to the PyTorch model file (e.g., models/best_model.ckpt): ")
+    # model_path = input("Enter the path to the PyTorch model file (e.g., models/best_model.ckpt): ")
+    model_path = sys.argv[2]
 
-    save_path = f"./log/profile_output_{int(time.time())}.json"
+    save_path = "./log/profile_output.json" # static path
+    #save_path = f"./log/profile_output_{int(time.time())}.json"
 
     with profile(activities=[ProfilerActivity.CPU], record_shapes=True, on_trace_ready=tensorboard_trace_handler(save_path)) as prof:
         with record_function("full_predict"):
