@@ -338,15 +338,15 @@ DVC works in conjunction with our existing Git-based workflow, ensuring that the
 >
 > Answer:
 
-We used hydra to configure our experiments. The config files for experiments are found in configs/experiemnts. By running 
+We used Hydra to configure our experiments. The config files for experiments are found in configs/experiments. By running 
 
 `python knd/train_model.py`
 
-one could run the default experiement, corresponding to exp1.yaml. By running 
+one could run the default experiment, corresponding to exp1.yaml. By running
 
 `python knd/train_model.py experiment=<name-of-experiement>`
 
-one would run another one of the experiemnt configurations placed in the experiments folder eg. experiment=exp2.
+one would run another one of the experiment configurations placed in the experiments folder, e.g. experiment=exp2.
 
 ### Question 13
 
@@ -492,13 +492,14 @@ Machine Type: n1-highcpu-32
 Machine Count: 1
 Container Location: gcr.io/kidsndogs/train_model
 config_VertexAI.yaml
-# config_cpu.yaml
+```config_cpu.yaml
 workerPoolSpecs:
     machineSpec:
         machineType: n1-highmem-2
     replicaCount: 1
     containerSpec:
         imageUri: gcr.io/kidsndogs/train_model
+```
 
 ### Question 19
 
