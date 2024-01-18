@@ -21,6 +21,14 @@ jobs:
         python-version: 3.8
       # This step sets up a Python 3.8 environment.
 
+    - name: Cache Python dependencies
+      uses: actions/cache@v2
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
@@ -46,7 +54,6 @@ jobs:
 
     - name: Run Profiler
       run: 
-        export PYTHONPATH=$PYTHONPATH:${{ github.workspace }}
         python ./knd/predict_model.py ./tests/03-01-08-01-02-02-03.wav ./models/best_model.ckpt
       # This step runs the profiler on the script and outputs the result to profile_output.
 
