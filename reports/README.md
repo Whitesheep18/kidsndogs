@@ -459,7 +459,7 @@ In terms of code optimization and performance, we recognized the importance of p
 
 In our project, we have harnessed the computational power of Google Compute Engine to run three distinct containers dedicated to model training, predictions, and the prediction API. The instances deployed are of the following specifications:
 
-***Machine Type:** n1-standard-1
+**Machine Type:** n1-standard-1
 
 **Architecture:** x86/64
 
