@@ -8,7 +8,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -22,6 +21,14 @@ jobs:
         python-version: 3.8
       # This step sets up a Python 3.8 environment.
 
+    - name: Cache Python dependencies
+      uses: actions/cache@v2
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
@@ -29,28 +36,34 @@ jobs:
       # This step upgrades pip and installs your project's dependencies.
       # 'requirements.txt' should list your project's dependencies,
       # and 'requirements_tests.txt' should list dependencies specific to testing.
+      
     - uses: iterative/setup-dvc@v1
+    
     - name: Get data
       run: dvc pull
-      env:
-        GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
+
+    - name: Install knd
+      run: |
+        pip install -e .
+
+    - name: Download Best Model
+      run: |
+        python ./knd/models/download_public.py
+      # This step downloads the best model from the specified URL into the knd/models directory.
 
     - name: Test with pytest
       run: |
-          pip install pytest
-          pytest -v
-
-    - name: Install Profiling Package
-      run: pip install cProfileV
-      # This step installs the cProfilev package which is a Python profiler.
+        pip install pytest
+        pytest -v
 
     - name: Run Profiler
-      run: python -m cProfilev -o profile_output your_script.py
-      # This step runs the profiler on your_script.py and outputs the result to profile_output.
-    
+      run: 
+        python ./knd/predict_model.py ./tests/03-01-08-01-02-02-03.wav ./models/best_model.ckpt
+      # This step runs the profiler on the script and outputs the result to profile_output.
+
     - name: Upload profiling output
       uses: actions/upload-artifact@v2
       with:
         name: profiling-output
-        path: profile_output
-        # This step uploads the profiling output as an artifact of the workflow run.
+        path: ./log/profile_output.json
+      # This step uploads the profiling output as an artifact of the workflow run.
