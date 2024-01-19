@@ -347,9 +347,11 @@ one would run another one of the experiemnt configurations placed in the experim
 >
 > Answer:
 
-We made use of config files as it is described above. Whenever an experiment runs, the hyperparameters in the hydra config file gets inserted to the model and the WandbLogger makes sure to save these hyperparameters in wandb. This way it is easy to see what hyperparameters a model training run had. It is easy to trace runs through wandb, where one can see the logged metrics along the parameters used under "Config" in run_name/Overview and other information such as who ran the model when and at what commit of our repository. To reproduce an experiment one would have to know which config file refers to that experiment (or potentially write one that with the configuration that needs to be reproduced) and run:
-
+We applied configuration files as described earlier. When an experiment is executed, the hyperparameters specified in the Hydra config file are inserted into the model. The WandbLogger ensures that these hyperparameters are saved in Wandb, allowing us to review the hyperparameters associated with a model training run easily.
+By checking Wandb, one can view the logged metrics alongside the parameters used, conveniently listed under `Config` in the run_name/Overview section. Additional information, such as who ran the model, when, and at what commit of our repository., is also available.
+To replicate an experiment, one needs to identify the corresponding config file for a specific experiment and execute the following command:
 `python knd/train_model.py experiment=<name-of-experiement>`
+Alternatively, users can create a new config file with the necessary configuration settings.
 
 ### Question 14
 
@@ -366,8 +368,16 @@ We made use of config files as it is described above. Whenever an experiment run
 >
 > Answer:
 
-For both train and validation sets we have logged metrics. We logged loss, accuracy and macro F1 score both for the individual batches and after an epoch. Moreover after each epoch we also saved a confusion matrix. Find the train accuracy and the validation accuracy in figures/. The run "gallant-resonance-16" corresponds to experiment 1 (exp1 in configs/) while "confused-river-17" corresponds to experiment 2 (exp 2 in configs/). Accuracy is a good way of getting an idea of the overall performance of the model. Similarly, the macro F1 score also gives a good overview, but it is a measure that is adjusted for class-specific performance. We have decided to go with macro averaging, as our classes are balanced. Confusion matrix gives a more fine-grained insight into what classes is the model good (or bad) at predicting. Find a screenshot of two of our runs "dandy-durian-45" and "rich-armadillo-43" in figures/confmats.png. The runs use the same hyperparameters (exp1), but one is at an earlier epoch. This gives us an understanding of what order the classes are learnt. (One can also adjust epoch number with the "step" slider to understand the individual run's behavior.) Furthermore, in eg. "rich-armadillo-43", the corresponding accuracy was rather low, and the F1 score was even lower, as the model has a tendency of predicting 2 classes ("calm" and "angry").
-
+For both train and validation sets, we have logged metrics. We logged loss, accuracy, and macro F1 scores for the individual batches and after an epoch. Moreover, after each epoch, we also saved a confusion matrix. The run "gallant-resonance-16"  and  "confused-river-17" training and validation accuracy are illustrated in the following:
+![my_image](figures/train_acc.png)
+![my_image](figures/val_acc.png)
+Accuracy is a good way of getting an idea of the model's overall performance.
+Similarly, the macro F1 score also gives a good overview, but it is a measure that is adjusted for class-specific performance. We have decided to go with macro averaging, as our classes are balanced. The confusion matrix gives a more fine-grained insight into what classes the model is good (or bad) at predicting.
+![my_image](figures/confmat.png)
+![my_image](figures/confmats.png)
+The runs use the same hyperparameters, but one is at an earlier epoch. Which gives us an understanding of the order in which the classes are learned. (One can also adjust the epoch number with the "step" slider to understand the individual run's behavior.) Furthermore, in, e.g., "rich-armadillo-43", the corresponding accuracy was relatively low. The F1 score was even lower, as the model tends to predict two classes ("calm" and "angry").
+It's worth to note that later in the project we reorganized our metrics in wandb such that training and validation metrics are stored under different directories. For example instead of val_acc_epoch we stored val/acc_epoch. An example of this is presented in:
+![my_image](figures/wandb1.png)
 ### Question 15
 
 > **Docker is an important tool for creating containerized applications. Explain how you used docker in your**
@@ -381,7 +391,7 @@ For both train and validation sets we have logged metrics. We logged loss, accur
 >
 > Answer:
 
-In our project, we have implemented a robust containerization and deployment strategy using Docker to encapsulate prediction models, prediction API, and model training processes. This strategy enables seamless execution both locally and on the Google Cloud platform, offering flexibility and scalability. Our workflow includes automated builds triggered by GitHub updates, while manual building and registry push options cater to users' and our convenience. 
+In our project, we have implemented a robust containerization and deployment strategy using Docker to encapsulate prediction models, prediction API, and model training processes. This strategy enables seamless execution both locally and on the Google Cloud platform, offering scalability. Our workflow includes automated builds triggered by GitHub updates, while manual building and registry push options offer flexibility. 
 
 *Overview of Dockerfiles*
 
@@ -389,30 +399,18 @@ Our project employs Dockerfiles to define the configuration and dependencies for
 
 1. **Prediction Models:** The `prediction_model.dockerfile` encapsulates the environment necessary for deploying our prediction model.
 
-2. **API Service:** The `api_service.dockerfile` specifies the configuration for deploying our prediction API.
+2. **API Service:** The `predict_api.dockerfile` specifies the configuration for deploying our prediction API.
 
-3. **Model Training:** The `train_model.dockerfile` provides the environment for the training model, supporting both local and cloud execution.
+3. **Model Training:** The `train_model.dockerfile` provides the environment for the training model.
 
 *For instance*
 Developers can locally build Docker images using the following commands:
 ```docker build -f dockerfiles/train_model.dockerfile . -t <container_name>:latest```
-and vice versa to the other two. Link to docker file: <https://github.com/Whitesheep18/kidsndogs/tree/docker/dockerfiles>
+and vice versa to the other two. Link to one of our docker files: <https://github.com/Whitesheep18/kidsndogs/dockerfiles/predict_api.dockerfile>
 
 *Cloud Deployment*
 
-Automated builds and deployments on Google Cloud are facilitated by GitHub integration. Updates to the repository trigger the automatic creation of Docker images and subsequent deployment of updated containers on Google Cloud.
-
-**GitHub Integration**
-
-Our GitHub repository serves as a central hub for version control and automation. Key integration points include:
-
-1. **Image Build Trigger:** Commits to ```main``` branches automatically initiate Docker image builds for each project component.
-
-2. **Container Deployment Trigger:** Following successful image builds, the updated containers are automatically deployed on Google Cloud, ensuring a streamlined and efficient process.
-
-**Manual Build and Registry Push**
-
-For our and people who would like to manual control over the deployment process or testing, an option involves building Docker images locally and pushing them to the Container Registry. This flexibility caters to a diverse base with convenience for the deployment method and intergration.
+Automated builds and deployments on Google Cloud are facilitated by Cloud Build. Updates to the repository trigger the automatic creation of Docker images and subsequent deployment of updated containers on Google Cloud.
 
 
 ### Question 16
@@ -429,7 +427,7 @@ For our and people who would like to manual control over the deployment process 
 > Answer:
 
 For debugging during our experiments, we adopted a hybrid approach. Locally, we mostly utilized the built-in debugger in Visual Studio Code, which offers an intuitive environment for identifying and resolving issues with tools like "add checkpoint". In scenarios where the built-in debugger was not sufficient, we used traditional print statement debugging. This method, though simple, proved effective in tracing and understanding the flow of data and the state of variables at various execution points. We also looked at logs while moving the training process to the cloud from local.
-In terms of code optimization and performance, we recognized the importance of profiling. We conducted a comprehensive profiling of our main code using PyTorch's built-in tools for the prediction of the emotion starting from the .wav audio file. The profiling data revealed that certain functions called while executing the prediction, notably load_model, were significant time consumers. Therefore, we implemented changes to optimize this function and avoid bottlenecks. The revised load_model function now incorporates a more efficient state loading strategy. In the updated implementation, we streamlined the process of loading the model's state dictionary from the checkpoint. By refining how we access and load the checkpoint data, we minimized I/O operations and reduced the overall loading time. 
+In terms of code optimization and performance, we conducted profiling of our main code using PyTorch's built-in tools for the prediction of the emotion starting from the .wav audio file. The profiling data revealed that certain functions called while executing the prediction, notably load_model, were significant time consumers. Therefore, we implemented changes to optimize this function and avoid bottlenecks. The revised load_model function now incorporates a more efficient state loading strategy. In the updated implementation, we streamlined the process of loading the model's state dictionary from the checkpoint. By refining how we access and load the checkpoint data, we minimized I/O operations and reduced the overall loading time. 
 
 
 ## Working in the cloud
@@ -451,7 +449,7 @@ In terms of code optimization and performance, we recognized the importance of p
 * Cloud Storage: for storing and versioning data in a GCP bucket.
 * Triggers: To automatically build images when changes are made to main. 
 * Container Registry: Images are stored in containers.
-* Cloud Engine: To create and run virtual machines.
+* Compute Engine: To create and run virtual machines.
 * Cloud Run: deploys the model in GCP. 
 * Vertex AI: automatically create a VM for us, launch our experiments and then close the VM afterwards.
 
@@ -469,23 +467,23 @@ In terms of code optimization and performance, we recognized the importance of p
 > Answer:
 
 In our project, we have utillized the computational power of Google Compute Engine to run three distinct containers dedicated to model training, predictions, and the prediction API. The instances deployed are of the following specifications:
-
-Machine Type: n1-standard-1
-Architecture: x86/64
-GPUs: None
-Moreover, we have leveraged Google Vertex AI for the streamlined training of our models. By incorporating a specific script into our project, as exemplified by the configuration file https://github.com/Whitesheep18/kidsndogs/blob/docker/config_VertexAI.yaml, we have simplified the training process. This approach allows us to execute straightforward commands in Vertex AI, enhancing convenience and enabling multitasking for training of various models using a single command in the future. The Vertex AI instances utilized possess the following specifications:
+```yaml
+Machine Type: E2-highcpu-8
+```
+Moreover, we have leveraged Google Vertex AI for the streamlined training of our models. By incorporating a specific script into our project, as exemplified by the configuration file https://github.com/Whitesheep18/kidsndogs/config_VertexAI.yaml, we have simplified the training process. This approach allows us to execute straightforward commands in Vertex AI, enhancing convenience and enabling multitasking for training of various models using a single command in the future. The Vertex AI instances utilized possess the following specifications:
+```yaml
 Machine Type: n1-highcpu-32
 Machine Count: 1
 Container Location: gcr.io/kidsndogs/train_model
 config_VertexAI.yaml
-# config_cpu.yaml
+
 workerPoolSpecs:
     machineSpec:
-        machineType: n1-highmem-2
+        machineType: n1-highcpu-32
     replicaCount: 1
     containerSpec:
         imageUri: gcr.io/kidsndogs/train_model
-
+```
 ### Question 19
 
 > **Insert 1-2 images of your GCP bucket, such that we can see what data you have stored in it.**
@@ -527,7 +525,7 @@ workerPoolSpecs:
 >
 > Answer:
 
-We have deployed our predict api in the cloud using Cloud Run. The image of the container predict_api is automatically created by a trigger in Cloud Build, then pulled into Cloud Run. You can view the api through https://kidsndogs.dk/docs (which is a domain we bought) or https://predict-api-2tq5wj26ma-lz.a.run.app/docs (which is the assigned gcp domain) where you can try to upload a .wav file of the correct length (one is included in tests/) under POST "/predict". It may take some time to complete the first request, but the consequtive requests have lower latency. (This issue is described in an github issue). The root directory is just showing a health scheck.
+We have deployed our predict api in the cloud using Cloud Run. The image of the container predict_api is automatically created by a trigger in Cloud Build, then pulled into Cloud Run (manually). You can view the api through https://kidsndogs.dk/docs (which is a domain we bought) or https://predict-api-2tq5wj26ma-lz.a.run.app/docs (which is the assigned gcp domain) where you can try to upload a .wav file of the correct length (one is included in tests/) under POST "/predict". It may take some time to complete the first request, but the consequtive requests have lower latency. (This issue is described in an github issue). The root directory is just showing a health check.
 
 ### Question 23
 
@@ -543,9 +541,6 @@ We have deployed our predict api in the cloud using Cloud Run. The image of the 
 > Answer:
 
 We have managed to implement monitoring of model drift using Evidently in the predict Api. A user can upload audio files, and statistics about these files (currently only the mean of the corresponding spectogram) get saved into an intermediate database (a .csv). The data about the submitted files get compared to the same statistics about our training set. This comparison can be invoked by using the GET method in monitoring. Evidently creates a monitoring.html file, which visualizes the comparisons. There are a number of problems with our current script though: firstly, instead of the mean, we should track meaningful features of our audio files (such as summary metrics of spectograms). Secondly, the evidently visualization cannot seem to handle a high enough precision to meaningfully visualize our metrics. An example monitoring.html is included in figures/. A successful monitoring pipeline would allow us to detect in time if the data we are supposed to train on changes over time, so we can change and retrain our model (such as sound samples recorded with a better quality device, in case our model has learnt to pick up on something device-related).
-![my_image](figures/confmat.png)
-![my_image](figures/confmats.png)
-https://files.slack.com/files-pri/T02RX35FQFQ-F06F56L4DL0/download/monitoring.html?origin_team=T02RX35FQFQ
 
 
 ### Question 24
@@ -561,6 +556,23 @@ https://files.slack.com/files-pri/T02RX35FQFQ-F06F56L4DL0/download/monitoring.ht
 > Answer:
 
 --- question 24 fill here ---
+
+### Question 24
+
+> **How many credits did you end up using during the project and what service was most expensive?**
+>
+> Answer length: 25-100 words.
+>
+> Example:
+> *Group member 1 used ..., Group member 2 used ..., in total ... credits was spend during development. The service*
+> *costing the most was ... due to ...*
+>
+> Answer:
+
+In total (as of 19th January at 10 am), we spend US$18.33 on the project. We spend $12.13 on Cloud Storage, $3.66 on Cloud Run, $2.75 on Cloud Build, $2.28 on Compute Engine and $1.25 on Vertex AI. The reason for the relatively high cost for Google Storage was due to a bucket being created and used by Cloud Build to store container images generated by the Cloud Build services. Some images were a few GB in size. We mostly used the standard VMs which were also the cheapest, hence the total cost for the other services were not too high.
+
+![GCP_billing](figures/GCP_billing.png)
+
 
 ## Overall discussion of project
 
@@ -582,7 +594,7 @@ https://files.slack.com/files-pri/T02RX35FQFQ-F06F56L4DL0/download/monitoring.ht
 > Answer:
 
 In the diagram we have separated the local from the remote setup. On the left side of the black dashed line, the local setup includes the local data storage and github repository. On the right side of the line, we have the setup up in the cloud which includes all the services used in GCP as well as the Fast API application that creates an interface between the ML model and the end user. Whenever changes are made to files in the repository and pushed to the main branch, continuous integration is ensured by a trigger in GCP that rebuilds images for training and prediction. Once the training image is built, it is used to create a training job in Vertex AI and simultaneously logged in Weights and Biases. The prediction API is containerized using another Docker container which is deployed in Cloud Run. Through the deployment, an API can viewed in the browser using FastAPI. In this way, end users can interact with the model and perform prediction, which in our case includes uploading an audio file as input and getting the predicted emotion as output. Additionally, DVC is used for data versioning and a GCP bucket is used for storing data in the cloud. The dockerfiles in the repo pulls the data from the cloud to make it available for training.
-![my_image](figures/diagram.png)
+![my_image](figures/diagramfinal.png)
 
 ### Question 26
 
@@ -596,7 +608,7 @@ In the diagram we have separated the local from the remote setup. On the left si
 >
 > Answer:
 
-Some of the biggest challenges in the project included making the different tools work together. For example, getting model training to work in Vertex AI proved to be a challenge. We managed to perform training locally but moving it to the cloud required building an image in Cloud build, fetch it from Container Registry, getting data from Cloud Storage and perform training in Vertex AI. We especially struggled with pulling the data from the cloud into our docker container.
+Some of the biggest challenges in the project included making the different tools work together. For example, getting model training to work in Vertex AI proved to be a challenge. We managed to perform training locally but moving it to the cloud required building an image in Cloud build, fetch it from Container Registry, getting data from Cloud Storage and perform training in Vertex AI. We especially struggled with pulling the data from the cloud into our docker container. Authentications, such as dvc and wandb authentication, was challenging at several occasions and took a significant amount of debugging. It took a long time to build images, hence debugging was a cumbersome process. Implementing multiple frameworks and trying to make them work together also caused some troubles. For example, having Hydra together with Weights and Biases. We eventually found some workarounds, however, we learned that choosing a selection of tools and exploiting their features might be advantageous as making multiple tools work together can be unnecessarily complicated. Lastly, we had some minor challenges while collaborating in GitHub since some group members were new to the workflow. This led to merge conflicts and many branches in the repository but this improved as we got used to the github workflow.
 
 ### Question 27
 
