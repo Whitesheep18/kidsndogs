@@ -464,7 +464,7 @@ In our project, we have utillized the computational power of Google Compute Engi
 ```yaml
 Machine Type: E2-highcpu-8
 ```
-Moreover, we have leveraged Google Vertex AI for the streamlined training of our models. By incorporating a specific script into our project, as exemplified by the configuration file https://github.com/Whitesheep18/kidsndogs/config_VertexAI.yaml, we have simplified the training process. This approach allows us to execute straightforward commands in Vertex AI, enhancing convenience and enabling multitasking for training of various models using a single command in the future. The Vertex AI instances utilized possess the following specifications:
+Moreover, we have leveraged Google Vertex AI for the streamlined training of our models. By incorporating a specific script into our project, as exemplified by the configuration file <https://github.com/Whitesheep18/kidsndogs/blob/main/config_VertexAI.yaml>, we have simplified the training process. This approach allows us to execute straightforward commands in Vertex AI, enhancing convenience and enabling multitasking for training of various models using a single command in the future. The Vertex AI instances utilized possess the following specifications:
 ```yaml
 Machine Type: n1-highcpu-32
 Machine Count: 1
