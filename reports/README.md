@@ -129,7 +129,7 @@ s164590, s220034, s232437, s220817
 >
 > Answer:
 
-In the modeling phase, we employed torchaudio to effectively manage sound samples, while leveraging torchvision for modeling, specifically focusing on spectrograms. Our model evaluation process was implemented with the incorporation of torchmetrics. Version control was handled through git and dvc, the latter dedicated to managing data, with our repository residing on GitHub. The project was containerized using Docker, and the final image was shared on Docker Hub. To keep tabs on our project's performance, we implemented logging through wandb and configured experiments using Hydra. Maintaining code integrity was a priority, achieved through the use of  pytest for unit tests, and seamless integration of changes via GitHub Actions which came with the upload of profiling outputs.
+In the modeling phase, we employed torchaudio to effectively manage sound samples, while leveraging torchvision for modeling, specifically focusing on spectrograms. To reduce boilerplate we used Pytorch Lightning. Our model evaluation process was implemented with the incorporation of torchmetrics. Version control was handled through git and dvc, the latter dedicated to managing data, with our repository residing on GitHub. The project was containerized using Docker, and the final images was pushed to Container Registry. To keep tabs on our project's performance, we implemented logging through wandb and configured experiments using Hydra. Maintaining code integrity was a priority, achieved through the use of pytest for unit tests, and seamless integration of changes via GitHub Actions which came with the upload of profiling outputs.
 
 
 ## Coding environment
@@ -154,10 +154,10 @@ We used conda for managing our dependencies. We continuously built up the requir
 2. Clone this repository with git clone git@github.com:Whitesheep18/kidsndogs.git
 3. run `make create_enviroment` to create a conda environment called knd
 4. run `conda activate knd` to activate this environment
-5. run `make requirements` to install all required packages
+5. run `make requirements` to install all required packages (optionally one could execute `pip install requirements_dev.txt`)
 6. run `dvc pull` to get the latest raw and processed data
 We also ran pipreqs as a sanity check at the end of the project.
-One can also build the image with docker build -f dockerfiles/train_model.dockerfile . -t kidsndogs:latest
+One can also build the image with `docker build -f dockerfiles/train_model.dockerfile . -t train_model:latest`
 
 ### Question 5
 
@@ -172,7 +172,7 @@ One can also build the image with docker build -f dockerfiles/train_model.docker
 > *experiments.*
 > Answer:
 
-We initiated the project using the cookiecutter structure as a foundation. We filled different files such as 'make_dataset.py' file in the src/data/ folder and the 'model.py', 'predict_model.py' and 'train_model.py' files in the src/models folder have been completed, contributing to the overall project setup. Additional folders such as '.github', '.dvc', 'conf' and 'wandb' have been incorporated. '.github' handles unittesting and workflows, '.dvc' outlines the configuration for dvc and data push/pull operations, while 'conf' manages the configuration files essential for project execution. Dockerfiles and YAML files have been created, facilitating Vertex AI runs with a main.py inference file located in the root directory. We did not fill out the notebooks folder, which was removed since jupyter notebooks were not used for this project. We added a dockerfiles folder that includes the dockerfiles needed to build images for training and inference of the model. We did not use the src/visualizations folder since wandb was used for visualizing results. 
+We initiated the project using the cookiecutter structure as a foundation. We filled different files such as 'make_dataset.py' file in the knd/data/ folder and the `model.py`, `predict_model.py` and `train_model.py` files in the knd/models folder have been completed, contributing to the overall project setup. Additional folders such as `.github`, `.dvc`, `configs` and `wandb` have been incorporated. `.github` handles unittesting and workflows, `.dvc` outlines the configuration for dvc and data push/pull operations, while `configs` manages the configuration files essential for project execution. We did not fill out the notebooks folder, which was removed since jupyter notebooks were not used for this project. We added a dockerfiles folder that includes the dockerfiles needed to build images for training and inference of the model. We did not use the knd/visualizations folder since wandb was used for visualizing results. 
 
 ### Question 6
 
@@ -206,9 +206,9 @@ In total, three tests have been implemented in two separate scripts:
 1. **`test_data_loading` in `test_dataloader.py`**:
    - This test checks the functionality of the data loaders. It ensures that both the training and testing dataloaders are correctly loading batches of data and that these batches match the expected number of samples.
 2. **`test_model_initialization` in `TestDummyNetModel`**:
-   - A unit test within the `TestDummyNetModel` class. It verifies the proper initialization of the `DummyNet` model with specified parameters such as learning rate, number of hidden units, and dropout rate.
+   - A unit test within the `TestDummyNetModel` class. It verifies the proper initialization of the `DummyNet` model with specified parameters such as learning rate, number of hidden units.
 3. **`test_model_output_shape` in `TestDummyNetModel`**:
-   - Another test in the `TestDummyNetModel` class. It checks if the `DummyNet` model produces output tensors of the correct shape.
+   - It checks if the `DummyNet` model produces output tensors of the correct shape.
 
 ### Question 8
 
@@ -229,18 +229,7 @@ Even if our code coverage reached 100%, it wouldn't guarantee the code is error-
 
 Complete coverage can give a false sense of security. It's crucial to complement high coverage with thorough test cases that cover a wide range of inputs, including edge cases, and to conduct other forms of testing such as integration testing, performance testing, and user acceptance testing to ensure the reliability and robustness of the code.
 
-| Name                            | Stmts | Miss | Branch | BrPart | Cover | Missing                                      |
-|---------------------------------|-------|------|--------|--------|-------|----------------------------------------------|
-| knd\__init__.py                 | 0     | 0    | 0      | 0      | 100%  |                                              |
-| knd\data\__init__.py            | 0     | 0    | 0      | 0      | 100%  |                                              |
-| knd\data\dataloader.py          | 29    | 5    | 6      | 1      | 77%   | 46-52                                        |
-| knd\models\__init__.py          | 0     | 0    | 0      | 0      | 100%  |                                              |
-| knd\models\model.py             | 54    | 25   | 4      | 1      | 55%   | 34-35, 38-48, 52, 55-65, 69, 73-78           |
-| tests\__init__.py               | 4     | 0    | 0      | 0      | 100%  |                                              |
-| tests\test_dataloader.py        | 17    | 1    | 6      | 3      | 83%   | 15->20, 20->exit, 26                         |
-| tests\test_modelconstruction.py | 19    | 1    | 2      | 1      | 90%   | 55                                           |
-|---------------------------------|-------|------|--------|--------|-------|----------------------------------------------|
-| TOTAL                           | 123   | 32   | 18     | 6      | 72%   |                                              |
+![my_image](figures/coverage.png)
 
 
 ### Question 9
@@ -259,9 +248,7 @@ Complete coverage can give a false sense of security. It's crucial to complement
 > 
 Yes, our workflow extensively utilized branches and pull requests, aligning with best practices in version control and ensuring a collaborative and error-resistant development process. Specifically, we implemented branch protection on the main branch, meaning that direct pushes were prohibited, and updates were only allowed via pull requests. This approach ensured that each change was reviewed, and at least one other team member had to approve the pull request before merging. This facilitated peer review, leading to higher code quality and shared code ownership.
 
-Additionally, pull requests were configured to merge only if the automated tests passed, ensuring that new changes didn't introduce regressions or break existing functionality. This practice significantly improved our code stability and reliability.
-
-Moreover, we adopted a feature-branch workflow, creating separate branches for each addition or improvement, such as 'docker', 'profiling', 'testing', and 'dvc'. This method allowed us to work on different features or fixes simultaneously without interfering with the main codebase or each other's work. Each branch focused on a specific task, making our development process more organized, manageable, and reducing the risk of conflicts. This branching strategy, coupled with pull requests and code reviews, greatly enhanced our version control, facilitateting continuous integration.
+Moreover, we adopted a feature-branch workflow, creating separate branches for each addition or improvement, such as `docker`, `profiling`, `testing`, and `dvc`. This method allowed us to work on different features or fixes simultaneously without interfering with the main codebase or each other's work. Each branch focused on a specific task, making our development process more organized, manageable, and reducing the risk of conflicts. This branching strategy, coupled with pull requests and code reviews, greatly enhanced our version control, facilitateting continuous integration.
 
 
 
@@ -279,7 +266,7 @@ Moreover, we adopted a feature-branch workflow, creating separate branches for e
 >
 > Answer:
 
-We used DVC in our project initially using Google Drive and later with a GCP bucket. Data version control makes it easier to collaborate on the same dataset and tracking changes. It is useful to known which changes/updates have been made to the data and being able to perform a rollback, if necessary. In our project, the dataset was static but updated once to include more data. In a bigger project running in the long-term, data versioning would be more beneficial. By incorporating DVC into our GitHub Actions workflow, we enhanced the reproducibility and consistency of our tests. The specific dataset version associated with each workflow run was automatically retrieved, guaranteeing that tests were conducted on the correct data.
+We used DVC in our project initially using Google Drive and later with a GCP bucket. Data version control makes it easier to collaborate on the same dataset and tracking changes. It is useful to know which changes/updates have been made to the data and being able to perform a rollback, if necessary. In our project, the dataset was static but updated once to include more data. In a bigger project running in the long-term, data versioning would be more beneficial. By incorporating DVC into our GitHub Actions workflow, we enhanced the reproducibility and consistency of our tests. The specific dataset version associated with each workflow run was automatically retrieved, guaranteeing that tests were conducted on the correct data.
 
 ### Question 11
 
@@ -297,7 +284,7 @@ We used DVC in our project initially using Google Drive and later with a GCP buc
 
 Our GitHub Actions workflow, **"Run Tests"** is integral to our Continuous Integration (CI) system, focusing on code robustness and compatibility. It activates for pushes or pull requests to main or master branches, reinforcing our commitment to high-quality code.
 
-The workflow rigorously tests our code across various environments, ensuring consistent performance on both Ubuntu and Windows, trying different Python versions by supporting testing 3.10 and 3.11. Initialization involves setting up the required environment and installing dependencies listed in `requirements.txt`. A crucial enhancement to our CI process is the implementation of dependency caching, significantly optimizing build times:
+The workflow rigorously tests our code across various environments, trying different Python versions by supporting testing 3.10 and 3.11. Initialization involves setting up the required environment and installing dependencies listed in `requirements.txt`. A crucial enhancement to our CI process is the implementation of dependency caching, significantly optimizing build times:
 
 ```yaml
 - name: Cache Python dependencies
@@ -316,10 +303,8 @@ The workflow includes a specific section dedicated to data retrieval, crucial fo
 ```yaml
 - name: Get data
   run: dvc pull
-  env:
-    GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
 ```
-DVC works in conjunction with our existing Git-based workflow, ensuring that the data our tests rely on is the correct version, in sync with the code being tested. Moreover, we prioritize security and confidentiality: the GDRIVE_CREDENTIALS_DATA environment variable, stored securely as a GitHub secret, allows us to securely access our data stored on Google Drive, without exposing sensitive credentials.
+DVC works in conjunction with our existing Git-based workflow, ensuring that the data our tests rely on is the correct version, in sync with the code being tested. 
 
 
 ## Running code and tracking experiments
@@ -339,7 +324,7 @@ DVC works in conjunction with our existing Git-based workflow, ensuring that the
 >
 > Answer:
 
-We used hydra to configure our experiments. The config files for experiments are found in configs/experiemnts. By running 
+We used hydra to configure our experiments. The config files for experiments are found in configs/experiemnts. For example, by running 
 
 `python knd/train_model.py`
 
