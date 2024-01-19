@@ -279,7 +279,7 @@ Moreover, we adopted a feature-branch workflow, creating separate branches for e
 >
 > Answer:
 
-We used DVC in our project initially using Google Drive and later with a GCP bucket. Data version control makes it easier to collaborate on the same dataset and tracking changes. It is useful to known which changes/updates have been made to the data and being able to perform a rollback, if necessary. In our project, the dataset was static but updated once to include more data. In a bigger project running in the long-term, data versioning would be more beneficial. By incorporating DVC into our GitHub Actions workflow, we enhanced the reproducibility and consistency of our tests. The specific dataset version associated with each workflow run was automatically retrieved, guaranteeing that tests were conducted.
+We used DVC in our project initially using Google Drive and later with a GCP bucket. Data version control makes it easier to collaborate on the same dataset and tracking changes. It is useful to known which changes/updates have been made to the data and being able to perform a rollback, if necessary. In our project, the dataset was static but updated once to include more data. In a bigger project running in the long-term, data versioning would be more beneficial. By incorporating DVC into our GitHub Actions workflow, we enhanced the reproducibility and consistency of our tests. The specific dataset version associated with each workflow run was automatically retrieved, guaranteeing that tests were conducted on the correct data.
 
 ### Question 11
 
