@@ -12,13 +12,16 @@ COPY configs/ configs/
 
 WORKDIR /
 RUN pip install dvc 'dvc[gs]'
+
+RUN dvc init --no-scm
+COPY .dvc/config .dvc
+COPY data.dvc .
+RUN dvc config core.no_scm true
+RUN dvc status
+
 RUN pip install -r requirements.txt --no-cache-dir
 RUN pip install -e . --no-deps --no-cache-dir
 
-RUN dvc init --no-scm
-COPY .dvc/config .dvc/config
-COPY data.dvc data.dvc
-RUN dvc config core.no_scm true
-RUN dvc pull
 
-ENTRYPOINT ["python", "-u", "knd/train_model.py"]
+#ENTRYPOINT ["python", "-u", "knd/train_model.py"]
+CMD dvc pull && python -u knd/train_model.py
