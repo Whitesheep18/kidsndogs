@@ -131,7 +131,6 @@ s164590, s220034, s232437, s220817
 
 In the modeling phase, we employed torchaudio to effectively manage sound samples, while leveraging torchvision for modeling, specifically focusing on spectrograms. To reduce boilerplate we used Pytorch Lightning. Our model evaluation process was implemented with the incorporation of torchmetrics. Version control was handled through git and dvc, the latter dedicated to managing data, with our repository residing on GitHub. The project was containerized using Docker, and the final images was pushed to Container Registry. To keep tabs on our project's performance, we implemented logging through wandb and configured experiments using Hydra. Maintaining code integrity was a priority, achieved through the use of pytest for unit tests, and seamless integration of changes via GitHub Actions which came with the upload of profiling outputs.
 
-
 ## Coding environment
 
 > In the following section we are interested in learning more about you local development environment.
@@ -231,7 +230,6 @@ Complete coverage can give a false sense of security. It's crucial to complement
 
 ![my_image](figures/coverage.png)
 
-
 ### Question 9
 
 > **Did you workflow include using branches and pull requests? If yes, explain how. If not, explain how branches and**
@@ -249,7 +247,6 @@ Complete coverage can give a false sense of security. It's crucial to complement
 Yes, our workflow extensively utilized branches and pull requests, aligning with best practices in version control and ensuring a collaborative and error-resistant development process. Specifically, we implemented branch protection on the main branch, meaning that direct pushes were prohibited, and updates were only allowed via pull requests. This approach ensured that each change was reviewed, and at least one other team member had to approve the pull request before merging. This facilitated peer review, leading to higher code quality and shared code ownership.
 
 Moreover, we adopted a feature-branch workflow, creating separate branches for each addition or improvement, such as `docker`, `profiling`, `testing`, and `dvc`. This method allowed us to work on different features or fixes simultaneously without interfering with the main codebase or each other's work. Each branch focused on a specific task, making our development process more organized, manageable, and reducing the risk of conflicts. This branching strategy, coupled with pull requests and code reviews, greatly enhanced our version control, facilitateting continuous integration.
-
 
 
 
@@ -305,7 +302,6 @@ The workflow includes a specific section dedicated to data retrieval, crucial fo
   run: dvc pull
 ```
 DVC works in conjunction with our existing Git-based workflow, ensuring that the data our tests rely on is the correct version, in sync with the code being tested. 
-
 
 ## Running code and tracking experiments
 
@@ -412,7 +408,6 @@ and vice versa to the other two. Link to one of our docker files: <https://githu
 
 Automated builds and deployments on Google Cloud are facilitated by Cloud Build. Updates to the repository trigger the automatic creation of Docker images and subsequent deployment of updated containers on Google Cloud.
 
-
 ### Question 16
 
 > **When running into bugs while trying to run your experiments, how did you perform debugging? Additionally, did you**
@@ -428,7 +423,6 @@ Automated builds and deployments on Google Cloud are facilitated by Cloud Build.
 
 For debugging during our experiments, we adopted a hybrid approach. Locally, we mostly utilized the built-in debugger in Visual Studio Code, which offers an intuitive environment for identifying and resolving issues with tools like "add checkpoint". In scenarios where the built-in debugger was not sufficient, we used traditional print statement debugging. This method, though simple, proved effective in tracing and understanding the flow of data and the state of variables at various execution points. We also looked at logs while moving the training process to the cloud from local.
 In terms of code optimization and performance, we conducted profiling of our main code using PyTorch's built-in tools for the prediction of the emotion starting from the .wav audio file. The profiling data revealed that certain functions called while executing the prediction, notably load_model, were significant time consumers. Therefore, we implemented changes to optimize this function and avoid bottlenecks. The revised load_model function now incorporates a more efficient state loading strategy. In the updated implementation, we streamlined the process of loading the model's state dictionary from the checkpoint. By refining how we access and load the checkpoint data, we minimized I/O operations and reduced the overall loading time. 
-
 
 ## Working in the cloud
 
@@ -542,21 +536,6 @@ We have deployed our predict api in the cloud using Cloud Run. The image of the 
 
 We have managed to implement monitoring of model drift using Evidently in the predict Api. A user can upload audio files, and statistics about these files (currently only the mean of the corresponding spectogram) get saved into an intermediate database (a .csv). The data about the submitted files get compared to the same statistics about our training set. This comparison can be invoked by using the GET method in monitoring. Evidently creates a monitoring.html file, which visualizes the comparisons. There are a number of problems with our current script though: firstly, instead of the mean, we should track meaningful features of our audio files (such as summary metrics of spectograms). Secondly, the evidently visualization cannot seem to handle a high enough precision to meaningfully visualize our metrics. An example monitoring.html is included in figures/. A successful monitoring pipeline would allow us to detect in time if the data we are supposed to train on changes over time, so we can change and retrain our model (such as sound samples recorded with a better quality device, in case our model has learnt to pick up on something device-related).
 
-
-### Question 24
-
-> **How many credits did you end up using during the project and what service was most expensive?**
->
-> Answer length: 25-100 words.
->
-> Example:
-> *Group member 1 used ..., Group member 2 used ..., in total ... credits was spend during development. The service*
-> *costing the most was ... due to ...*
->
-> Answer:
-
---- question 24 fill here ---
-
 ### Question 24
 
 > **How many credits did you end up using during the project and what service was most expensive?**
@@ -571,8 +550,7 @@ We have managed to implement monitoring of model drift using Evidently in the pr
 
 In total (as of 19th January at 10 am), we spend US$18.33 on the project. We spend $12.13 on Cloud Storage, $3.66 on Cloud Run, $2.75 on Cloud Build, $2.28 on Compute Engine and $1.25 on Vertex AI. The reason for the relatively high cost for Google Storage was due to a bucket being created and used by Cloud Build to store container images generated by the Cloud Build services. Some images were a few GB in size. We mostly used the standard VMs which were also the cheapest, hence the total cost for the other services were not too high.
 
-![GCP_billing](figures/GCP_billing.png)
-
+![my_image](figures/GCP_billing.png)
 
 ## Overall discussion of project
 
@@ -630,3 +608,5 @@ S164590: in charge of processing data and setting up CI in GCP.
 s220817: was responsible for metrics logging and deploying the API.
 s232437: was in charge of implementing testing, profiling and CI in GitHub.
 s220034: made docker containers and training in the cloud.
+
+
