@@ -362,9 +362,13 @@ one would run another one of the experiment configurations placed in the experim
 >
 > Answer:
 
-We made use of config files as it is described above. Whenever an experiment runs, the hyperparameters in the hydra config file gets inserted to the model and the WandbLogger makes sure to save these hyperparameters in wandb. This way it is easy to see what hyperparameters a model training run had. It is easy to trace runs through wandb, where one can see the logged metrics along the parameters used under "Config" in run_name/Overview and other information such as who ran the model when and at what commit of our repository. To reproduce an experiment one would have to know which config file refers to that experiment (or potentially write one that with the configuration that needs to be reproduced) and run:
+We applied configuration files as described earlier. When an experiment is executed, the hyperparameters specified in the Hydra config file are inserted into the model. The WandbLogger ensures that these hyperparameters are saved in Wandb, allowing us to review the hyperparameters associated with a model training run easily.
+By checking Wandb, one can view the logged metrics alongside the parameters used, conveniently listed under 'Config' in the run_name/Overview section. Additional information, such as who ran the model, when, and at what commit of our repository., is also available.
+To replicate an experiment, one needs to identify the corresponding config file for a specific experiment and execute the following command:
 
 `python knd/train_model.py experiment=<name-of-experiement>`
+
+Alternatively, users can create a new config file with the necessary configuration settings.
 
 ### Question 14
 
