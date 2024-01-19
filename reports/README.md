@@ -402,7 +402,7 @@ Our project employs Dockerfiles to define the configuration and dependencies for
 *For instance*
 Developers can locally build Docker images using the following commands:
 ```docker build -f dockerfiles/train_model.dockerfile . -t <container_name>:latest```
-and vice versa to the other two. Link to one of our docker files: <https://github.com/Whitesheep18/kidsndogs/dockerfiles/predict_api.dockerfile>
+and vice versa to the other two. Link to one of our docker files: <https://github.com/Whitesheep18/kidsndogs/blob/main/dockerfiles/predict_api.dockerfile>
 
 *Cloud Deployment*
 
